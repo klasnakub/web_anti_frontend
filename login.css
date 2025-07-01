@@ -1,14 +1,17 @@
 /* Custom Login Page Styling */
 :root {
-  --primary-orange: #F26522;
+  --primary-purple: #3c185a;
+  --primary-purple-light: #5a2a7a;
+  --primary-purple-dark: #2a123f;
   --primary-black: #111111;
   --primary-white: #FFFFFF;
   --primary-gray: #E5E5E5;
-  --accent-gradient: linear-gradient(90deg, #ff5e62 0%, #9b36b7 50%, #5f2eea 100%);
+  --accent-gradient: linear-gradient(90deg, #3c185a 0%, #5a2a7a 50%, #7a3a9a 100%);
 }
 
 .login-bg {
-  background: var(--primary-white);
+  background: url('backgroud.jpg') no-repeat center center fixed;
+  background-size: cover;
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -29,7 +32,7 @@
   background: var(--primary-white);
   border-radius: 20px;
   padding: 1.5rem 1.25rem;
-  box-shadow: 0 8px 32px rgba(17, 17, 17, 0.10);
+  box-shadow: 0 8px 32px rgba(60, 24, 90, 0.15);
   border: 1px solid var(--primary-gray);
   position: relative;
   z-index: 1;
@@ -45,7 +48,7 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background: linear-gradient(45deg, #3c185a, #5a2a7a, #7a3a9a, #9a4aba);
   border-radius: 22px;
   z-index: -1;
   opacity: 0.3;
@@ -60,9 +63,9 @@
 .logo-container {
   display: inline-block;
   padding: 1rem;
-  background: var(--primary-orange);
+  background: var(--primary-purple);
   border-radius: 50%;
-  box-shadow: 0 8px 20px rgba(242, 101, 34, 0.15);
+  box-shadow: 0 8px 20px rgba(60, 24, 90, 0.25);
   animation: logoFloat 3s ease-in-out infinite;
 }
 
@@ -88,8 +91,8 @@
 }
 
 .form-control:focus {
-  border-color: var(--primary-orange);
-  box-shadow: 0 0 0 0.2rem rgba(242, 101, 34, 0.15);
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 0.2rem rgba(60, 24, 90, 0.15);
 }
 
 .input-group-text {
@@ -119,25 +122,27 @@
 }
 
 .btn-outline-secondary:hover {
-  background: var(--primary-orange);
-  border-color: var(--primary-orange);
+  background: var(--primary-purple);
+  border-color: var(--primary-purple);
   color: var(--primary-white);
 }
 
 .btn-primary {
-  background: var(--primary-orange);
+  background: var(--primary-purple);
   color: var(--primary-white);
   border: none;
   border-radius: 12px;
   padding: 0.875rem 1.5rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(242, 101, 34, 0.15);
+  box-shadow: 0 4px 15px rgba(60, 24, 90, 0.25);
 }
 
 .btn-primary:hover {
   background: var(--accent-gradient);
   color: var(--primary-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60, 24, 90, 0.35);
 }
 
 .btn-primary:active {
@@ -157,11 +162,11 @@
 
 /* Alert styling */
 .alert-danger {
-  background: var(--primary-orange);
+  background: var(--primary-purple);
   border: none;
   border-radius: 12px;
   color: var(--primary-white);
-  box-shadow: 0 4px 15px rgba(242, 101, 34, 0.10);
+  box-shadow: 0 4px 15px rgba(60, 24, 90, 0.20);
 }
 
 /* Responsive adjustments */

@@ -8,12 +8,30 @@ body {
 
 .sidebar {
   width: 320px;
-  background: #2d323a;
+  background: url('backgroud2.jpg') no-repeat center center;
+  background-size: cover;
   color: #fff;
   display: flex;
   flex-direction: column;
   height: 100vh;
   justify-content: space-between;
+  position: relative;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(45, 50, 58, 0.8);
+  z-index: 1;
+}
+
+.sidebar > * {
+  position: relative;
+  z-index: 2;
 }
 
 .sidebar-title {
