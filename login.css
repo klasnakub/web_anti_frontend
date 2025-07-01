@@ -1,0 +1,224 @@
+/* Custom Login Page Styling */
+:root {
+  --primary-orange: #F26522;
+  --primary-black: #111111;
+  --primary-white: #FFFFFF;
+  --primary-gray: #E5E5E5;
+  --accent-gradient: linear-gradient(90deg, #ff5e62 0%, #9b36b7 50%, #5f2eea 100%);
+}
+
+.login-bg {
+  background: var(--primary-white);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  pointer-events: none;
+}
+
+.login-card {
+  background: var(--primary-white);
+  border-radius: 20px;
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 8px 32px rgba(17, 17, 17, 0.10);
+  border: 1px solid var(--primary-gray);
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  border-radius: 22px;
+  z-index: -1;
+  opacity: 0.3;
+  animation: borderGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes borderGlow {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.logo-container {
+  display: inline-block;
+  padding: 1rem;
+  background: var(--primary-orange);
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(242, 101, 34, 0.15);
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.logo-container i {
+  color: var(--primary-white) !important;
+  font-size: 2.5rem !important;
+}
+
+/* Custom form styling */
+.form-control {
+  border: 2px solid var(--primary-gray);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: var(--primary-white);
+  color: var(--primary-black);
+}
+
+.form-control:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 0.2rem rgba(242, 101, 34, 0.15);
+}
+
+.input-group-text {
+  border: 2px solid var(--primary-gray);
+  border-radius: 12px 0 0 12px;
+  background: var(--primary-gray);
+  border-right: none;
+  color: var(--primary-black);
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+}
+
+.input-group .form-control:focus {
+  border-left: none;
+}
+
+.btn-outline-secondary {
+  border: 2px solid var(--primary-gray);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  background: var(--primary-gray);
+  color: var(--primary-black);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--primary-orange);
+  border-color: var(--primary-orange);
+  color: var(--primary-white);
+}
+
+.btn-primary {
+  background: var(--primary-orange);
+  color: var(--primary-white);
+  border: none;
+  border-radius: 12px;
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(242, 101, 34, 0.15);
+}
+
+.btn-primary:hover {
+  background: var(--accent-gradient);
+  color: var(--primary-white);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Form validation styling */
+.form-control.is-valid, .was-validated .form-control:valid {
+  border-color: var(--primary-gray) !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+
+.was-validated .form-control:invalid {
+  border-color: #dc3545;
+}
+
+/* Alert styling */
+.alert-danger {
+  background: var(--primary-orange);
+  border: none;
+  border-radius: 12px;
+  color: var(--primary-white);
+  box-shadow: 0 4px 15px rgba(242, 101, 34, 0.10);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1rem 0.75rem;
+    margin: 1rem;
+  }
+  
+  .logo-container {
+    padding: 0.75rem;
+  }
+  
+  .logo-container i {
+    font-size: 2rem !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .login-card {
+    max-width: 480px;
+    padding: 2rem 2.5rem;
+  }
+}
+
+/* Loading animation for button */
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--primary-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Floating animation for the card */
+.login-card {
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50% { transform: translateY(-5px) rotateX(1deg); }
+} 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream Monitor Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-title">Stream Monitor</div>
+    <div class="sidebar-menu">
+      <button class="active"><span>🏠</span> Dashboard</button>
+      <button><span>⚙️</span> Management</button>
+    </div>
+    <div class="sidebar-footer">
+      <div class="admin">👤 ADMINS</div>
+      <a href="#" class="logout">🔓 Logout</a>
+    </div>
+  </div>
+  <div class="main">
+    <h1>Dashboard</h1>
+    <p class="subtitle">Monitor and manage streaming links</p>
+    <div class="filters">
+      <select id="league">
+        <option>All Leagues</option>
+      </select>
+      <select id="match">
+        <option>All Matches</option>
+      </select>
+      <select id="status">
+        <option>All Statuses</option>
+      </select>
+      <button class="apply">Apply Filters</button>
+      <button class="add">+ Add New Ticket</button>
+      <button class="export">📁 Export CSV</button>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket Id</th>
+            <th>League</th>
+            <th>Match</th>
+            <th>URL</th>
+            <th>Screenshot</th>
+            <th>Status</th>
+            <th>Create Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8" class="no-entries">No entries found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="script.js?v=1.0.0"></script>
+</body>
+</html> 
