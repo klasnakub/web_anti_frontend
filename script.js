@@ -12,6 +12,8 @@ if (logoutBtn) {
   logoutBtn.addEventListener('click', function(e) {
     e.preventDefault();
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('username');
     window.location.href = 'login.html';
   });
 } 

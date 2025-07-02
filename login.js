@@ -39,7 +39,7 @@ loginForm.addEventListener('submit', async function(e) {
   const password = passwordInput.value.trim();
 
   try {
-    const response = await fetch('https://fastapi-login-system-8286388439.us-central1.run.app/login', {
+    const response = await fetch('https://web-anti-backend-8286388439.asia-southeast1.run.app/login', {
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -50,8 +50,13 @@ loginForm.addEventListener('submit', async function(e) {
 
     if (response.ok) {
       // Login success
+      const data = await response.json().catch(() => ({}));
       localStorage.setItem('isLoggedIn', '1');
       localStorage.setItem('username', username);
+      // Store access token if provided
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+      }
       window.location.href = 'index.html';
     } else {
       // Login failed
