@@ -90,6 +90,11 @@
     .search-box:focus {
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
     }
+    
+    .badge {
+      min-width: 80px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -193,6 +198,7 @@
                 <table class="table table-hover mb-0" id="leaguesTable">
                   <thead>
                     <tr>
+                      <th class="fw-semibold">No.</th>
                       <th class="fw-semibold">League Name</th>
                       <th class="fw-semibold">Country</th>
                       <th class="fw-semibold">Status</th>
@@ -237,32 +243,40 @@
     function populateViewModal(leagueName, country, status, season) {
       console.log('View Modal Data:', { leagueName, country, status, season });
       
-      // Update modal title
-      document.getElementById('viewLeagueModalLabel').innerHTML = '<i class="bi bi-eye me-2"></i>League Details - ' + leagueName;
-      
-      // Update league name (first form-control-plaintext)
-      const leagueNameElement = document.querySelector('#viewLeagueModal .form-control-plaintext');
-      if (leagueNameElement) {
-        leagueNameElement.textContent = leagueName;
-      }
-      
-      // Update country (second form-control-plaintext)
-      const countryElements = document.querySelectorAll('#viewLeagueModal .form-control-plaintext');
-      if (countryElements.length >= 2) {
-        countryElements[1].textContent = country;
-      }
-      
-      // Update season (third form-control-plaintext)
-      const seasonElements = document.querySelectorAll('#viewLeagueModal .form-control-plaintext');
-      if (seasonElements.length >= 3) {
-        seasonElements[2].textContent = season;
-      }
-      
-      // Update status badge
-      const statusBadge = document.querySelector('#viewLeagueModal .badge');
-      if (statusBadge) {
-        statusBadge.textContent = status;
-        statusBadge.className = status === 'Active' ? 'badge bg-success' : 'badge bg-warning';
+      try {
+        // Update modal title
+        const modalLabel = document.getElementById('viewLeagueModalLabel');
+        if (modalLabel) {
+          modalLabel.innerHTML = '<i class="bi bi-eye me-2"></i>League Details - ' + (leagueName || 'N/A');
+        }
+        
+        // Update league name (first form-control-plaintext)
+        const leagueNameElements = document.querySelectorAll('#viewLeagueModal .form-control-plaintext');
+        if (leagueNameElements.length >= 1) {
+          leagueNameElements[0].textContent = leagueName || 'N/A';
+        }
+        
+        // Update country (second form-control-plaintext)
+        if (leagueNameElements.length >= 2) {
+          leagueNameElements[1].textContent = country || 'N/A';
+        }
+        
+        // Update season (third form-control-plaintext)
+        if (leagueNameElements.length >= 3) {
+          leagueNameElements[2].textContent = season || 'N/A';
+        }
+        
+        // Update status badge
+        const statusBadge = document.querySelector('#viewLeagueModal .badge');
+        if (statusBadge) {
+          statusBadge.textContent = status || 'N/A';
+          statusBadge.className = status === 'Active' ? 'badge bg-success' : 'badge bg-warning';
+        }
+        
+        console.log('View modal populated successfully');
+      } catch (error) {
+        console.error('Error populating view modal:', error);
+        alert('Error displaying league details. Please try again.');
       }
     }
 
@@ -407,7 +421,7 @@
       if (leagues.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="5" class="text-center text-muted py-4">
+            <td colspan="6" class="text-center text-muted py-4">
               <i class="bi bi-inbox fs-1 d-block mb-2"></i>
               No leagues found
             </td>
@@ -418,6 +432,7 @@
       
       tbody.innerHTML = leagues.map((league, index) => `
         <tr>
+          <td><span class="badge bg-light text-dark">${index + 1}</span></td>
           <td>
             <div class="fw-semibold">${league.league_name || 'N/A'}</div>
           </td>
@@ -427,7 +442,7 @@
           <td>
             <div class="btn-group btn-group-sm">
               <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewLeagueModal" 
-                      onclick="populateViewModal('${league.league_name || ''}', '${league.country || ''}', '${league.status || ''}', '${league.season || ''}')">
+                      onclick="populateViewModal('${(league.league_name || '').replace(/'/g, "\\'")}', '${(league.country || '').replace(/'/g, "\\'")}', '${(league.status || '').replace(/'/g, "\\'")}', '${(league.season || '').replace(/'/g, "\\'")}')">
                 <i class="bi bi-eye"></i>
               </button>
               <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editLeagueModal"
