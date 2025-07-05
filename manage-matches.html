@@ -135,8 +135,8 @@
             <div class="bg-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 40px; height: 40px;">
               <i class="bi bi-person-fill text-primary"></i>
             </div>
-            <div class="text-white-50 small">Admin User</div>
-            <a href="#" class="nav-link text-white-50 small">
+            <div class="text-white-50 small" id="userDisplay">Admin User</div>
+            <a href="#" class="nav-link text-white-50 small logout">
               <i class="bi bi-box-arrow-right me-1"></i>Logout
             </a>
           </div>
@@ -221,98 +221,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">1</span></td>
-                      <td><span class="fw-semibold">Man City</span></td>
-                      <td><span class="fw-semibold">Arsenal</span></td>
-                      <td>Premier League</td>
-                      <td>2024-01-15 20:00</td>
-                      <td><span class="badge bg-success">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
-                                  onclick="populateViewMatchModal('Man City', 'Arsenal', 'Premier League', '2024-01-15 20:00', 'Active')">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
-                                  onclick="populateEditMatchModal('Man City', 'Arsenal', 'Premier League', '2024-01-15 20:00', 'Active')">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">2</span></td>
-                      <td><span class="fw-semibold">Barcelona</span></td>
-                      <td><span class="fw-semibold">Real Madrid</span></td>
-                      <td>La Liga</td>
-                      <td>2024-01-16 21:00</td>
-                      <td><span class="badge bg-success">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
-                                  onclick="populateViewMatchModal('Barcelona', 'Real Madrid', 'La Liga', '2024-01-16 21:00', 'Active')">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
-                                  onclick="populateEditMatchModal('Barcelona', 'Real Madrid', 'La Liga', '2024-01-16 21:00', 'Active')">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">3</span></td>
-                      <td><span class="fw-semibold">Bayern</span></td>
-                      <td><span class="fw-semibold">Dortmund</span></td>
-                      <td>Bundesliga</td>
-                      <td>2024-01-14 19:30</td>
-                      <td><span class="badge bg-danger">Inactive</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
-                                  onclick="populateViewMatchModal('Bayern', 'Dortmund', 'Bundesliga', '2024-01-14 19:30', 'Inactive')">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
-                                  onclick="populateEditMatchModal('Bayern', 'Dortmund', 'Bundesliga', '2024-01-14 19:30', 'Inactive')">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">4</span></td>
-                      <td><span class="fw-semibold">Man United</span></td>
-                      <td><span class="fw-semibold">Liverpool</span></td>
-                      <td>Premier League</td>
-                      <td>2024-01-17 22:00</td>
-                      <td><span class="badge bg-success">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
-                                  onclick="populateViewMatchModal('Man United', 'Liverpool', 'Premier League', '2024-01-17 22:00', 'Active')">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
-                                  onclick="populateEditMatchModal('Man United', 'Liverpool', 'Premier League', '2024-01-17 22:00', 'Active')">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                    <!-- Data will be loaded from API -->
                   </tbody>
                 </table>
               </div>
@@ -324,7 +233,7 @@
   </div>
 
   <!-- Add Match Modal -->
-  <div class="modal fade" id="addMatchModal" tabindex="-1" aria-labelledby="addMatchModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addMatchModal" tabindex="-1" aria-labelledby="addMatchModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -348,11 +257,7 @@
                 <label for="leagueName" class="form-label fw-semibold">League Name</label>
                 <select class="form-select" id="leagueName" name="leagueName" required>
                   <option value="">Select League</option>
-                  <option value="Premier League">Premier League</option>
-                  <option value="La Liga">La Liga</option>
-                  <option value="Bundesliga">Bundesliga</option>
-                  <option value="Serie A">Serie A</option>
-                  <option value="Ligue 1">Ligue 1</option>
+                  <!-- Options will be loaded from API -->
                 </select>
               </div>
               <div class="col-md-6">
@@ -382,9 +287,57 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Auth Utility -->
+  <script src="auth.js"></script>
   
   <script>
+    // --- Auth check ---
+    if (!validateAuth()) {
+      // validateAuth() will handle the redirect
+      // This prevents the rest of the script from executing
+      throw new Error('Authentication failed');
+    }
+
+    // Logout handler
+    const logoutBtn = document.querySelector('.logout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
+      });
+    }
+
+    // Update user display and load data
+    document.addEventListener('DOMContentLoaded', function() {
+      displayTokenInfo();
+      
+      // Load matches and leagues when page loads
+      loadMatches();
+      loadLeaguesForDropdowns();
+      
+      // Add event listeners for modals
+      const addMatchModal = document.getElementById('addMatchModal');
+      if (addMatchModal) {
+        addMatchModal.addEventListener('show.bs.modal', function() {
+          // Reload leagues when opening Add Match modal
+          loadLeaguesForDropdowns();
+        });
+      }
+      
+      const editMatchModal = document.getElementById('editMatchModal');
+      if (editMatchModal) {
+        editMatchModal.addEventListener('show.bs.modal', function() {
+          // Reload leagues when opening Edit Match modal
+          loadLeaguesForDropdowns();
+        });
+      }
+    });
     function exportToCSV() {
+      // Check authentication before proceeding
+      if (!validateAuth()) {
+        return;
+      }
+      
       try {
         // Get the table
         const table = document.querySelector('table');
@@ -464,74 +417,323 @@
       }
     }
 
-    function addNewMatch() {
+    // Function to load matches from API
+    async function loadMatches() {
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          return;
+        }
+        
+        // Fetch matches from API using authenticated request
+        const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/matches', {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const matches = await response.json();
+          console.log('Matches loaded:', matches);
+          displayMatches(matches);
+        } else {
+          console.error('Error loading matches:', response.status);
+          // Show fallback data if API fails
+          displayMatches([]);
+        }
+      } catch (error) {
+        console.error('Network error loading matches:', error);
+        // Show fallback data if network error
+        displayMatches([]);
+      }
+    }
+
+    // Function to display matches in table
+    function displayMatches(matches) {
+      const tbody = document.querySelector('table tbody');
+      if (!tbody) return;
+      
+      if (matches.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center text-muted py-4">
+              <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+              No matches found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tbody.innerHTML = matches.map((match, index) => {
+        // Format date for display
+        const matchDate = new Date(match.match_date);
+        const formattedDate = matchDate.toLocaleString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        }).replace(',', '');
+        
+        return `
+          <tr>
+            <td><span class="badge bg-light text-dark">${index + 1}</span></td>
+            <td><span class="fw-semibold">${match.home_team || 'N/A'}</span></td>
+            <td><span class="fw-semibold">${match.away_team || 'N/A'}</span></td>
+            <td>${match.league_name || 'N/A'}</td>
+            <td>${formattedDate}</td>
+            <td><span class="badge ${match.status === 'Active' ? 'bg-success' : 'bg-danger'}">${match.status || 'N/A'}</span></td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
+                        onclick="populateViewMatchModal('${(match.home_team || '').replace(/'/g, "\\'")}', '${(match.away_team || '').replace(/'/g, "\\'")}', '${(match.league_name || '').replace(/'/g, "\\'")}', '${formattedDate.replace(/'/g, "\\'")}', '${(match.status || '').replace(/'/g, "\\'")}')">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
+                        onclick="populateEditMatchModal('${(match.home_team || '').replace(/'/g, "\\'")}', '${(match.away_team || '').replace(/'/g, "\\'")}', '${match.league_id || ''}', '${match.match_date || ''}', '${(match.status || '').replace(/'/g, "\\'")}', '${match.match_id || ''}')">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger" onclick="deleteMatch('${match.match_id || ''}', '${(match.home_team || '').replace(/'/g, "\\'")} vs ${(match.away_team || '').replace(/'/g, "\\'")}')">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Function to delete match
+    async function deleteMatch(matchId, matchName) {
+      if (!matchId) {
+        alert('Match ID not found');
+        return;
+      }
+      
+      // Confirm deletion
+      if (!confirm(`Are you sure you want to delete "${matchName}"?`)) {
+        return;
+      }
+      
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          return;
+        }
+        
+        // Make DELETE API call using authenticated request
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/matches/${matchId}`, {
+          method: 'DELETE',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          console.log('Match deleted successfully');
+          alert('Match deleted successfully!');
+          
+          // Reload matches data
+          loadMatches();
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Error deleting match:', errorData);
+          alert('Error deleting match: ' + (errorData.detail || 'Unknown error'));
+        }
+        
+      } catch (error) {
+        console.error('Network error deleting match:', error);
+        alert('Network error. Please try again.');
+      }
+    }
+
+    // Function to load leagues for dropdowns (return Promise)
+    async function loadLeaguesForDropdowns() {
+      return new Promise(async (resolve) => {
+        try {
+          // Check authentication before proceeding
+          if (!validateAuth()) {
+            resolve();
+            return;
+          }
+          // Show loading state
+          showLeagueDropdownsLoading();
+          // Fetch leagues from API using authenticated request
+          const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/leagues', {
+            method: 'GET',
+            headers: {
+              'accept': 'application/json'
+            }
+          });
+          if (response.ok) {
+            const leagues = await response.json();
+            populateLeagueDropdowns(leagues);
+          }
+        } catch (error) {
+          // error handling ตามเดิม
+        } finally {
+          resolve();
+        }
+      });
+    }
+
+    // Function to populate league dropdowns
+    function populateLeagueDropdowns(leagues) {
+      // Filter only active leagues
+      const activeLeagues = leagues.filter(league => league.status === 'Active');
+      
+      // Get dropdown elements
+      const addLeagueDropdown = document.getElementById('leagueName');
+      const editLeagueDropdown = document.getElementById('editLeagueName');
+      
+      // Create options HTML (value = league_id, label = league_name (country))
+      const optionsHTML = activeLeagues.map(league => 
+        `<option value="${league.league_id}">${league.league_name} (${league.country})</option>`
+      ).join('');
+      
+      // Populate Add Match dropdown
+      if (addLeagueDropdown) {
+        // Keep the first "Select League" option
+        const firstOption = addLeagueDropdown.querySelector('option');
+        addLeagueDropdown.innerHTML = firstOption.outerHTML + optionsHTML;
+      }
+      
+      // Populate Edit Match dropdown
+      if (editLeagueDropdown) {
+        // Keep the first "Select League" option
+        const firstOption = editLeagueDropdown.querySelector('option');
+        editLeagueDropdown.innerHTML = firstOption.outerHTML + optionsHTML;
+      }
+      
+      console.log('League dropdowns populated with', activeLeagues.length, 'active leagues');
+    }
+
+    // Function to show loading state in league dropdowns
+    function showLeagueDropdownsLoading() {
+      const addLeagueDropdown = document.getElementById('leagueName');
+      const editLeagueDropdown = document.getElementById('editLeagueName');
+      
+      const loadingHTML = '<option value="">Select League...</option>';
+      
+      if (addLeagueDropdown) {
+        addLeagueDropdown.innerHTML = loadingHTML;
+      }
+      
+      if (editLeagueDropdown) {
+        editLeagueDropdown.innerHTML = loadingHTML;
+      }
+    }
+
+    async function addNewMatch() {
       const form = document.getElementById('addMatchForm');
       const formData = new FormData(form);
+      // Get Add Match button
+      const addBtn = document.querySelector('#addMatchModal .btn.btn-primary');
+      const originalBtnHTML = addBtn.innerHTML;
+      // Set loading state
+      addBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Adding...';
+      addBtn.disabled = true;
       
       // Get form values
       const homeTeam = formData.get('homeTeam');
       const awayTeam = formData.get('awayTeam');
-      const leagueName = formData.get('leagueName');
+      const leagueId = formData.get('leagueName'); // now leagueId
       const matchDate = formData.get('matchDate');
       const matchStatus = formData.get('matchStatus');
       
       // Validate form
-      if (!homeTeam || !awayTeam || !leagueName || !matchDate || !matchStatus) {
+      if (!homeTeam || !awayTeam || !leagueId || !matchDate || !matchStatus) {
         alert('Please fill in all fields');
+        // Restore button
+        addBtn.innerHTML = originalBtnHTML;
+        addBtn.disabled = false;
         return;
       }
       
-      // Format date for display
-      const dateObj = new Date(matchDate);
-      const formattedDate = dateObj.toLocaleString('en-GB', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      }).replace(',', '');
-      
-      // Get next number for the new row
-      const table = document.querySelector('table tbody');
-      const nextNumber = table.rows.length + 1;
-      
-      // Create new row HTML
-      const newRow = `
-        <tr>
-          <td><span class="badge bg-light text-dark">${nextNumber}</span></td>
-          <td><span class="fw-semibold">${homeTeam}</span></td>
-          <td><span class="fw-semibold">${awayTeam}</span></td>
-          <td>${leagueName}</td>
-          <td>${formattedDate}</td>
-          <td><span class="badge ${matchStatus === 'Active' ? 'bg-success' : 'bg-danger'}">${matchStatus}</span></td>
-          <td>
-            <div class="btn-group btn-group-sm">
-              <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewMatchModal" 
-                      onclick="populateViewMatchModal('${homeTeam}', '${awayTeam}', '${leagueName}', '${formattedDate}', '${matchStatus}')">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editMatchModal" 
-                      onclick="populateEditMatchModal('${homeTeam}', '${awayTeam}', '${leagueName}', '${formattedDate}', '${matchStatus}')">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-outline-danger">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
-      
-      // Add new row to table
-      table.insertAdjacentHTML('beforeend', newRow);
-      
-      // Reset form and close modal
-      form.reset();
-      const modal = bootstrap.Modal.getInstance(document.getElementById('addMatchModal'));
-      modal.hide();
-      
-      // Show success message
-      alert('Match added successfully!');
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          // Restore button
+          addBtn.innerHTML = originalBtnHTML;
+          addBtn.disabled = false;
+          return;
+        }
+        // 1. โหลด leagues เพื่อหา league_name
+        const leaguesResp = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/leagues', {
+          method: 'GET',
+          headers: { 'accept': 'application/json' }
+        });
+        const leagues = await leaguesResp.json();
+        const league = leagues.find(l => l.league_id === leagueId);
+        const leagueName = league ? league.league_name : '';
+
+        // 2. โหลด matches เพื่อหา match_id ล่าสุด
+        const matchesResp = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/matches', {
+          method: 'GET',
+          headers: { 'accept': 'application/json' }
+        });
+        const matches = await matchesResp.json();
+        let maxMatchId = 0;
+        matches.forEach(m => {
+          const id = parseInt(m.match_id, 10);
+          if (!isNaN(id) && id > maxMatchId) maxMatchId = id;
+        });
+        const newMatchId = (maxMatchId + 1).toString();
+
+        // 3. Prepare payload for API
+        const payload = {
+          match_id: newMatchId,
+          home_team: homeTeam,
+          away_team: awayTeam,
+          league_id: leagueId, // use league_id
+          league_name: leagueName,
+          match_date: new Date(matchDate).toISOString(),
+          status: matchStatus
+        };
+        
+        console.log('Sending match data:', payload);
+        
+        // Make POST API call using authenticated request
+        const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/matches', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Match added successfully:', result);
+          
+          // Show success message
+          alert('Match added successfully!');
+          
+          // Reset form and close modal
+          form.reset();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('addMatchModal'));
+          modal.hide();
+          
+          // Reload matches data
+          loadMatches();
+          
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Error adding match:', errorData);
+          alert('Error adding match: ' + (errorData.detail || 'Unknown error'));
+        }
+        
+      } catch (error) {
+        console.error('Network error adding match:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        // Restore button
+        addBtn.innerHTML = originalBtnHTML;
+        addBtn.disabled = false;
+      }
     }
   </script>
 
@@ -560,11 +762,7 @@
                 <label for="editLeagueName" class="form-label fw-semibold">League Name</label>
                 <select class="form-select" id="editLeagueName" name="editLeagueName" required>
                   <option value="">Select League</option>
-                  <option value="Premier League">Premier League</option>
-                  <option value="La Liga">La Liga</option>
-                  <option value="Bundesliga">Bundesliga</option>
-                  <option value="Serie A">Serie A</option>
-                  <option value="Ligue 1">Ligue 1</option>
+                  <!-- Options will be loaded from API -->
                 </select>
               </div>
               <div class="col-md-6">
@@ -638,10 +836,13 @@
   </div>
 
   <script>
-    function populateEditMatchModal(homeTeam, awayTeam, leagueName, matchDate, matchStatus) {
-      console.log('Edit Match Modal Data:', { homeTeam, awayTeam, leagueName, matchDate, matchStatus });
+    function populateEditMatchModal(homeTeam, awayTeam, leagueId, matchDate, matchStatus, matchId) {
+      console.log('Edit Match Modal Data:', { homeTeam, awayTeam, leagueId, matchDate, matchStatus, matchId });
       
       try {
+        // Store match ID in modal for update operation
+        document.getElementById('editMatchModal').setAttribute('data-match-id', matchId);
+        
         // Update modal title
         const modalLabel = document.getElementById('editMatchModalLabel');
         if (modalLabel) {
@@ -651,7 +852,10 @@
         // Populate form fields with current data
         document.getElementById('editHomeTeam').value = homeTeam || '';
         document.getElementById('editAwayTeam').value = awayTeam || '';
-        document.getElementById('editLeagueName').value = leagueName || '';
+        // โหลดลีกใหม่และ set ค่า leagueId หลังโหลดเสร็จ
+        loadLeaguesForDropdowns().then(() => {
+          document.getElementById('editLeagueName').value = leagueId || '';
+        });
         
         // Convert date string to datetime-local format
         if (matchDate) {
@@ -674,41 +878,110 @@
       }
     }
 
-    function updateMatch() {
+    async function updateMatch() {
       const form = document.getElementById('editMatchForm');
       const formData = new FormData(form);
+      // Get Update Match button
+      const updateBtn = document.querySelector('#editMatchModal .btn.btn-primary');
+      const originalBtnHTML = updateBtn.innerHTML;
+      // Set loading state
+      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Updating...';
+      updateBtn.disabled = true;
       
       // Get form values
       const homeTeam = formData.get('editHomeTeam');
       const awayTeam = formData.get('editAwayTeam');
-      const leagueName = formData.get('editLeagueName');
+      const leagueId = formData.get('editLeagueName'); // now leagueId
       const matchDate = formData.get('editMatchDate');
       const matchStatus = formData.get('editMatchStatus');
       
       // Validate form
-      if (!homeTeam || !awayTeam || !leagueName || !matchDate || !matchStatus) {
+      if (!homeTeam || !awayTeam || !leagueId || !matchDate || !matchStatus) {
         alert('Please fill in all fields');
+        // Restore button
+        updateBtn.innerHTML = originalBtnHTML;
+        updateBtn.disabled = false;
         return;
       }
       
-      // Format date for display
-      const dateObj = new Date(matchDate);
-      const formattedDate = dateObj.toLocaleString('en-GB', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      }).replace(',', '');
+      // Get match ID from modal
+      const matchId = document.getElementById('editMatchModal').getAttribute('data-match-id');
       
-      // For now, just show success message (no backend update)
-      alert('Match updated successfully! (Note: This is a demo - no actual data was updated)');
+      if (!matchId) {
+        alert('Match ID not found');
+        // Restore button
+        updateBtn.innerHTML = originalBtnHTML;
+        updateBtn.disabled = false;
+        return;
+      }
       
-      // Close modal
-      const modal = bootstrap.Modal.getInstance(document.getElementById('editMatchModal'));
-      modal.hide();
-      
-      console.log('Match update data:', { homeTeam, awayTeam, leagueName, formattedDate, matchStatus });
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          // Restore button
+          updateBtn.innerHTML = originalBtnHTML;
+          updateBtn.disabled = false;
+          return;
+        }
+        // 1. โหลด leagues เพื่อหา league_name
+        const leaguesResp = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/leagues', {
+          method: 'GET',
+          headers: { 'accept': 'application/json' }
+        });
+        const leagues = await leaguesResp.json();
+        const league = leagues.find(l => l.league_id === leagueId);
+        const leagueName = league ? league.league_name : '';
+        // 2. Prepare payload for API
+        const payload = {
+          match_id: matchId,
+          home_team: homeTeam,
+          away_team: awayTeam,
+          league_id: leagueId, // use league_id
+          league_name: leagueName,
+          match_date: new Date(matchDate).toISOString(),
+          status: matchStatus
+        };
+        
+        console.log('Sending update payload:', payload);
+        
+        // Make PUT API call using authenticated request
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/matches/${matchId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Match updated successfully:', result);
+          
+          // Show success message
+          alert('Match updated successfully!');
+          
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('editMatchModal'));
+          modal.hide();
+          
+          // Reload matches data
+          loadMatches();
+          
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Error updating match:', errorData);
+          alert('Error updating match: ' + (errorData.detail || 'Unknown error'));
+        }
+        
+      } catch (error) {
+        console.error('Network error updating match:', error);
+        alert('Network error. Please try again.');
+      } finally {
+        // Restore button
+        updateBtn.innerHTML = originalBtnHTML;
+        updateBtn.disabled = false;
+      }
     }
 
     function populateViewMatchModal(homeTeam, awayTeam, leagueName, matchDate, matchStatus) {
