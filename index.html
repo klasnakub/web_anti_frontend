@@ -168,7 +168,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="card-title text-white-50 mb-1">Website</h6>
+                      <h6 class="card-title text-white-50 mb-1">VOD</h6>
                       <h3 class="mb-0 text-white fw-bold" id="websiteCount">0</h3>
                     </div>
                     <div class="bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -183,7 +183,7 @@
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <h6 class="card-title text-white-50 mb-1">Social Media</h6>
+                      <h6 class="card-title text-white-50 mb-1">Live</h6>
                       <h3 class="mb-0 text-white fw-bold" id="socialMediaCount">0</h3>
                     </div>
                     <div class="bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -278,7 +278,7 @@
             <div class="card-header bg-transparent border-0">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0 fw-bold">
-                  <i class="bi bi-collection-play me-2"></i>Recent Streams
+                  <i class="bi bi-collection-play me-2"></i>Piracy Streams
                 </h5>
                 <div class="d-flex gap-2">
                   <button class="btn btn-light btn-modern" data-bs-toggle="modal" data-bs-target="#newUrlModal">
@@ -286,9 +286,6 @@
                   </button>
                   <button class="btn btn-light btn-modern text-dark" onclick="exportToCSV()">
                     <i class="bi bi-download me-2"></i>Export
-                  </button>
-                  <button class="btn btn-warning btn-modern" onclick="testAPIConnection()">
-                    <i class="bi bi-bug me-2"></i>Test API
                   </button>
                 </div>
               </div>
@@ -298,95 +295,18 @@
                 <table class="table table-hover mb-0">
                   <thead>
                     <tr>
-                      <th class="fw-semibold">ID</th>
+                      <th class="fw-semibold">Submission ID</th>
                       <th class="fw-semibold">URL</th>
                       <th class="fw-semibold">Type</th>
-                      <th class="fw-semibold">Matches</th>
-                      <th class="fw-semibold">League</th>
-                      <th class="fw-semibold">Date & Time</th>
+                      <th class="fw-semibold">Match ID</th>
+                      <th class="fw-semibold">League ID</th>
+                      <th class="fw-semibold">Created At</th>
                       <th class="fw-semibold">Status</th>
                       <th class="fw-semibold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">1</span></td>
-                      <td>
-                        <a href="#" class="text-decoration-none">https://example.com/stream1</a>
-                      </td>
-                      <td><span class="badge bg-danger" style="min-width: 100px;">Website</span></td>
-                      <td>
-                        <div class="fw-semibold">Man City vs Arsenal</div>
-                      </td>
-                      <td>Premier League</td>
-                      <td>15 Jan 2024, 20:00</td>
-                      <td><span class="badge bg-success text-white" style="min-width: 100px;">Active</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" onclick="viewStreamDetails(this)">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">2</span></td>
-                      <td>
-                        <a href="#" class="text-decoration-none">https://facebook.com/live/stream2</a>
-                      </td>
-                      <td><span class="badge bg-primary" style="min-width: 100px;">Social Media</span></td>
-                      <td>
-                        <div class="fw-semibold">Barcelona vs Real Madrid</div>
-                      </td>
-                      <td>La Liga</td>
-                      <td>16 Jan 2024, 21:00</td>
-                      <td><span class="badge bg-warning text-dark" style="min-width: 100px;">Pending</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" onclick="viewStreamDetails(this)">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="badge bg-light text-dark">3</span></td>
-                      <td>
-                        <a href="#" class="text-decoration-none">https://youtube.com/watch/stream3</a>
-                      </td>
-                      <td><span class="badge bg-primary" style="min-width: 100px;">Social Media</span></td>
-                      <td>
-                        <div class="fw-semibold">Bayern vs Dortmund</div>
-                      </td>
-                      <td>Bundesliga</td>
-                      <td>14 Jan 2024, 19:30</td>
-                      <td><span class="badge bg-secondary text-white" style="min-width: 100px;">Inactive</span></td>
-                      <td>
-                        <div class="btn-group btn-group-sm">
-                          <button class="btn btn-outline-primary" onclick="viewStreamDetails(this)">
-                            <i class="bi bi-eye"></i>
-                          </button>
-                          <button class="btn btn-outline-secondary">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button class="btn btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                    <!-- Data will be loaded from API -->
                   </tbody>
                 </table>
               </div>
@@ -410,15 +330,10 @@
         <div class="modal-body">
           <form id="newUrlForm">
             <div class="row g-3">
-              <!-- URL with Check button -->
+              <!-- URL field -->
               <div class="col-12">
                 <label for="urlAddress" class="form-label fw-semibold">URL</label>
-                <div class="input-group">
-                  <input type="url" class="form-control" id="urlAddress" name="urlAddress" placeholder="https://example.com" required>
-                  <button class="btn btn-outline-primary" type="button" onclick="checkUrl()">
-                    <i class="bi bi-check-circle me-1"></i>Check
-                  </button>
-                </div>
+                <input type="url" class="form-control" id="urlAddress" name="urlAddress" placeholder="https://example.com" required>
               </div>
               
               <!-- Type dropdown -->
@@ -576,7 +491,8 @@
 
     // Update counts when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      updateTypeCounts();
+      // Load URL submissions from API
+      loadUrlSubmissions();
       
       // Set up periodic token validation (check every 5 minutes)
       setInterval(() => {
@@ -590,10 +506,110 @@
       
       // Debug token for troubleshooting
       debugToken();
-      
-      // Test API connection
-      testAPIConnection();
     });
+
+    // Function to load URL submissions from API
+    async function loadUrlSubmissions() {
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          return;
+        }
+        
+        // Fetch URL submissions from API using authenticated request
+        const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/url_submission', {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const submissions = await response.json();
+          console.log('URL submissions loaded:', submissions);
+          displayUrlSubmissions(submissions);
+        } else {
+          console.error('Error loading URL submissions:', response.status);
+          // Show fallback data if API fails
+          displayUrlSubmissions([]);
+        }
+      } catch (error) {
+        console.error('Network error loading URL submissions:', error);
+        // Show fallback data if network error
+        displayUrlSubmissions([]);
+      }
+    }
+
+    // Function to display URL submissions in table
+    function displayUrlSubmissions(submissions) {
+      const tbody = document.querySelector('table tbody');
+      if (!tbody) return;
+      
+      if (submissions.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center text-muted py-4">
+              <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+              No URL submissions found
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tbody.innerHTML = submissions.map((submission) => {
+        // Format date for display
+        const createdDate = new Date(submission.created_at);
+        const formattedDate = createdDate.toLocaleString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        }).replace(',', '');
+        
+        // Determine badge color based on type
+        const typeBadgeClass = submission.type === 'VOD' ? 'bg-danger' : 'bg-primary';
+        
+        // Determine status badge color
+        let statusBadgeClass = 'bg-secondary';
+        if (submission.status === 'Active') statusBadgeClass = 'bg-success';
+        else if (submission.status === 'Pending') statusBadgeClass = 'bg-warning';
+        else if (submission.status === 'Inactive') statusBadgeClass = 'bg-danger';
+        
+        return `
+          <tr>
+            <td><span class="badge bg-light text-dark">${submission.submission_id || 'N/A'}</span></td>
+            <td>
+              <a href="${submission.url}" class="text-decoration-none" target="_blank">${submission.url}</a>
+            </td>
+            <td><span class="badge ${typeBadgeClass}" style="min-width: 100px;">${submission.type || 'N/A'}</span></td>
+            <td>
+              <div class="fw-semibold">${submission.match_id || 'N/A'}</div>
+            </td>
+            <td>${submission.league_id || 'N/A'}</td>
+            <td>${formattedDate}</td>
+            <td><span class="badge ${statusBadgeClass} text-white" style="min-width: 100px;">${submission.status || 'N/A'}</span></td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" onclick="viewStreamDetails(this)">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      
+      // Update counts after displaying data
+      updateTypeCounts();
+    }
     
 
 
@@ -792,8 +808,8 @@
       const table = document.querySelector('table');
       if (!table) return;
 
-      let websiteCount = 0;
-      let socialMediaCount = 0;
+      let vodCount = 0;
+      let liveCount = 0;
       let onlineCount = 0;
       let takedownCount = 0;
 
@@ -808,10 +824,10 @@
           if (typeCell.querySelector('.badge')) {
             const typeText = typeCell.querySelector('.badge').textContent.trim();
             
-            if (typeText === 'Website') {
-              websiteCount++;
-            } else if (typeText === 'Social Media') {
-              socialMediaCount++;
+            if (typeText === 'VOD') {
+              vodCount++;
+            } else if (typeText === 'Live') {
+              liveCount++;
             }
           }
           
@@ -831,8 +847,8 @@
       });
 
       // Update the display
-      document.getElementById('websiteCount').textContent = websiteCount;
-      document.getElementById('socialMediaCount').textContent = socialMediaCount;
+      document.getElementById('websiteCount').textContent = vodCount;
+      document.getElementById('socialMediaCount').textContent = liveCount;
       document.getElementById('onlineCount').textContent = onlineCount;
       document.getElementById('takedownCount').textContent = takedownCount;
     }

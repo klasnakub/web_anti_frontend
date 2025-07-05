@@ -211,7 +211,7 @@
                 <table class="table table-hover mb-0">
                   <thead>
                     <tr>
-                      <th class="fw-semibold">No.</th>
+                      <th class="fw-semibold">Match ID</th>
                       <th class="fw-semibold">Home Team</th>
                       <th class="fw-semibold">Away Team</th>
                       <th class="fw-semibold">League Name</th>
@@ -245,6 +245,10 @@
         <div class="modal-body">
           <form id="addMatchForm">
             <div class="row g-3">
+              <div class="col-12">
+                <label for="matchId" class="form-label fw-semibold">Match ID</label>
+                <input type="text" class="form-control" id="matchId" name="matchId" required>
+              </div>
               <div class="col-md-6">
                 <label for="homeTeam" class="form-label fw-semibold">Home Team</label>
                 <input type="text" class="form-control" id="homeTeam" name="homeTeam" required>
@@ -354,7 +358,7 @@
         }
 
         // Define CSV headers
-        const headers = ['No.', 'Home Team', 'Away Team', 'League Name', 'Date & Time', 'Status'];
+        const headers = ['Match ID', 'Home Team', 'Away Team', 'League Name', 'Date & Time', 'Status'];
         
         // Initialize CSV content with headers
         let csvContent = headers.join(',') + '\n';
@@ -365,9 +369,9 @@
           if (cells.length >= 6) {
             const rowData = [];
             
-            // No. column
-            const noCell = cells[0].textContent.trim();
-            rowData.push(`"${noCell}"`);
+            // Match ID column
+            const matchIdCell = cells[0].textContent.trim();
+            rowData.push(`"${matchIdCell}"`);
             
             // Home Team column
             const homeTeamCell = cells[1].textContent.trim();
@@ -466,7 +470,14 @@
         return;
       }
       
-      tbody.innerHTML = matches.map((match, index) => {
+      // Sort matches by Match ID (ascending order)
+      const sortedMatches = matches.sort((a, b) => {
+        const idA = parseInt(a.match_id) || 0;
+        const idB = parseInt(b.match_id) || 0;
+        return idA - idB;
+      });
+      
+      tbody.innerHTML = sortedMatches.map((match, index) => {
         // Format date for display
         const matchDate = new Date(match.match_date);
         const formattedDate = matchDate.toLocaleString('en-GB', {
@@ -479,7 +490,7 @@
         
         return `
           <tr>
-            <td><span class="badge bg-light text-dark">${index + 1}</span></td>
+            <td><span class="badge bg-light text-dark">${match.match_id || 'N/A'}</span></td>
             <td><span class="fw-semibold">${match.home_team || 'N/A'}</span></td>
             <td><span class="fw-semibold">${match.away_team || 'N/A'}</span></td>
             <td>${match.league_name || 'N/A'}</td>
@@ -637,6 +648,7 @@
       addBtn.disabled = true;
       
       // Get form values
+      const matchId = formData.get('matchId');
       const homeTeam = formData.get('homeTeam');
       const awayTeam = formData.get('awayTeam');
       const leagueId = formData.get('leagueName'); // now leagueId
@@ -644,7 +656,7 @@
       const matchStatus = formData.get('matchStatus');
       
       // Validate form
-      if (!homeTeam || !awayTeam || !leagueId || !matchDate || !matchStatus) {
+      if (!matchId || !homeTeam || !awayTeam || !leagueId || !matchDate || !matchStatus) {
         alert('Please fill in all fields');
         // Restore button
         addBtn.innerHTML = originalBtnHTML;
@@ -669,22 +681,9 @@
         const league = leagues.find(l => l.league_id === leagueId);
         const leagueName = league ? league.league_name : '';
 
-        // 2. โหลด matches เพื่อหา match_id ล่าสุด
-        const matchesResp = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/matches', {
-          method: 'GET',
-          headers: { 'accept': 'application/json' }
-        });
-        const matches = await matchesResp.json();
-        let maxMatchId = 0;
-        matches.forEach(m => {
-          const id = parseInt(m.match_id, 10);
-          if (!isNaN(id) && id > maxMatchId) maxMatchId = id;
-        });
-        const newMatchId = (maxMatchId + 1).toString();
-
-        // 3. Prepare payload for API
+        // 2. Prepare payload for API using user-input Match ID
         const payload = {
-          match_id: newMatchId,
+          match_id: matchId,
           home_team: homeTeam,
           away_team: awayTeam,
           league_id: leagueId, // use league_id
