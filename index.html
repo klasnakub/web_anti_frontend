@@ -227,50 +227,50 @@
 
           <!-- Search and Filters -->
           <div class="card mb-4">
-            <div class="card-body">
-              <div class="row g-3 align-items-end">
-                <div class="col-lg-4">
-                  <label class="form-label fw-semibold">Search Streams</label>
-                  <div class="input-group">
-                    <span class="input-group-text bg-transparent border-0">
-                      <i class="bi bi-search text-muted"></i>
-                    </span>
-                    <input type="text" class="form-control search-box" placeholder="Search by title, league, or match...">
+                          <div class="card-body">
+                <div class="row g-3 align-items-end">
+                  <div class="col-lg-4">
+                    <label class="form-label fw-semibold">Search Streams</label>
+                    <div class="input-group">
+                      <span class="input-group-text bg-transparent border-0">
+                        <i class="bi bi-search text-muted"></i>
+                      </span>
+                      <input type="text" class="form-control search-box" placeholder="Search by title, league, or match...">
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <label class="form-label fw-semibold">Match</label>
+                    <select class="form-select">
+                      <option selected>All Matches</option>
+                      <!-- Options will be loaded dynamically from table data -->
+                    </select>
+                  </div>
+                  <div class="col-lg-2">
+                    <label class="form-label fw-semibold">League</label>
+                    <select class="form-select">
+                      <option selected>All Leagues</option>
+                      <!-- Options will be loaded dynamically from table data -->
+                    </select>
+                  </div>
+                  <div class="col-lg-2">
+                    <label class="form-label fw-semibold">Date</label>
+                    <select class="form-select">
+                      <option selected>All Dates</option>
+                      <!-- Options will be loaded dynamically from table data -->
+                    </select>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-primary btn-modern flex-fill" onclick="applyFilters()">
+                        <i class="bi bi-funnel me-2"></i>Filter
+                      </button>
+                      <button class="btn btn-outline-secondary btn-modern" onclick="clearFilters()" title="Clear all filters">
+                        <i class="bi bi-x-circle"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-2">
-                  <label class="form-label fw-semibold">League</label>
-                  <select class="form-select">
-                    <option selected>All Leagues</option>
-                    <option>Premier League</option>
-                    <option>La Liga</option>
-                    <option>Bundesliga</option>
-                  </select>
-                </div>
-                <div class="col-lg-2">
-                  <label class="form-label fw-semibold">Status</label>
-                  <select class="form-select">
-                    <option selected>All Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                    <option>Pending</option>
-                  </select>
-                </div>
-                <div class="col-lg-2">
-                  <label class="form-label fw-semibold">Date Range</label>
-                  <select class="form-select">
-                    <option selected>Last 7 days</option>
-                    <option>Last 30 days</option>
-                    <option>Last 3 months</option>
-                  </select>
-                </div>
-                <div class="col-lg-2">
-                  <button class="btn btn-primary btn-modern w-100">
-                    <i class="bi bi-funnel me-2"></i>Filter
-                  </button>
-                </div>
               </div>
-            </div>
           </div>
 
           <!-- Streams Table -->
@@ -465,6 +465,9 @@
   <script src="auth.js"></script>
   
   <script>
+    // Global variable to store original data
+    let originalSubmissions = [];
+    
     // --- Auth check ---
     if (!validateAuth()) {
       // validateAuth() will handle the redirect
@@ -712,6 +715,10 @@
         if (response.ok) {
           const submissions = await response.json();
           console.log('URL submissions loaded:', submissions);
+          
+          // Store original data for filtering
+          originalSubmissions = submissions;
+          
           displayUrlSubmissions(submissions);
         } else {
           console.error('Error loading URL submissions:', response.status);
@@ -797,6 +804,15 @@
       
       // Update counts after displaying data
       updateTypeCounts();
+      
+      // Update match filter dropdown with unique matches from table
+      updateMatchFilterDropdown(submissions);
+      
+      // Update league filter dropdown with unique leagues from table
+      updateLeagueFilterDropdown(submissions);
+      
+      // Update date filter dropdown with unique dates from table
+      updateDateFilterDropdown(submissions);
     }
     
 
@@ -1101,6 +1117,146 @@
         deleteBtn.innerHTML = originalHTML;
         deleteBtn.disabled = false;
       }
+    }
+
+    // Function to update match filter dropdown with unique matches
+    function updateMatchFilterDropdown(submissions) {
+      // Get unique matches from submissions
+      const uniqueMatches = [...new Set(submissions.map(submission => submission.matches_name).filter(name => name && name !== 'N/A'))];
+      
+      // Get match filter dropdown
+      const matchFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(2) select');
+      
+      if (matchFilterDropdown) {
+        // Keep the first "All Matches" option
+        const firstOption = '<option selected>All Matches</option>';
+        
+        // Create options for unique matches
+        const optionsHTML = uniqueMatches.map(match => 
+          `<option value="${match}">${match}</option>`
+        ).join('');
+        
+        matchFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Match filter dropdown updated with', uniqueMatches.length, 'unique matches');
+      }
+    }
+
+    // Function to update league filter dropdown with unique leagues
+    function updateLeagueFilterDropdown(submissions) {
+      // Get unique leagues from submissions
+      const uniqueLeagues = [...new Set(submissions.map(submission => submission.league_name).filter(name => name && name !== 'N/A'))];
+      
+      // Get league filter dropdown
+      const leagueFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(3) select');
+      
+      if (leagueFilterDropdown) {
+        // Keep the first "All Leagues" option
+        const firstOption = '<option selected>All Leagues</option>';
+        
+        // Create options for unique leagues
+        const optionsHTML = uniqueLeagues.map(league => 
+          `<option value="${league}">${league}</option>`
+        ).join('');
+        
+        leagueFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('League filter dropdown updated with', uniqueLeagues.length, 'unique leagues');
+      }
+    }
+
+    // Function to update date filter dropdown with unique dates
+    function updateDateFilterDropdown(submissions) {
+      // Get unique dates from submissions
+      const uniqueDates = [...new Set(submissions.map(submission => {
+        const createdDate = new Date(submission.created_at);
+        return createdDate.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+      }).filter(date => date && date !== 'N/A'))];
+      
+      // Get date filter dropdown
+      const dateFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(4) select');
+      
+      if (dateFilterDropdown) {
+        // Keep the first "All Dates" option
+        const firstOption = '<option selected>All Dates</option>';
+        
+        // Create options for unique dates
+        const optionsHTML = uniqueDates.sort().map(date => 
+          `<option value="${date}">${date}</option>`
+        ).join('');
+        
+        dateFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Date filter dropdown updated with', uniqueDates.length, 'unique dates');
+      }
+    }
+
+    // Function to apply filters
+    function applyFilters() {
+      // Get filter values
+      const searchText = document.querySelector('.search-box').value.toLowerCase().trim();
+      const selectedMatch = document.querySelector('.card-body .col-lg-2:nth-child(2) select').value;
+      const selectedLeague = document.querySelector('.card-body .col-lg-2:nth-child(3) select').value;
+      const selectedDate = document.querySelector('.card-body .col-lg-2:nth-child(4) select').value;
+      
+      console.log('Applying filters:', {
+        searchText,
+        selectedMatch,
+        selectedLeague,
+        selectedDate
+      });
+      
+      // Filter submissions based on criteria
+      const filteredSubmissions = originalSubmissions.filter(submission => {
+        // Search text filter (partial match)
+        const searchMatch = !searchText || 
+          submission.url.toLowerCase().includes(searchText) ||
+          (submission.matches_name && submission.matches_name.toLowerCase().includes(searchText)) ||
+          (submission.league_name && submission.league_name.toLowerCase().includes(searchText)) ||
+          (submission.type && submission.type.toLowerCase().includes(searchText));
+        
+        // Match filter
+        const matchFilter = selectedMatch === 'All Matches' || 
+          (submission.matches_name && submission.matches_name === selectedMatch);
+        
+        // League filter
+        const leagueFilter = selectedLeague === 'All Leagues' || 
+          (submission.league_name && submission.league_name === selectedLeague);
+        
+        // Date filter
+        const submissionDate = new Date(submission.created_at);
+        const formattedSubmissionDate = submissionDate.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        const dateFilter = selectedDate === 'All Dates' || 
+          formattedSubmissionDate === selectedDate;
+        
+        return searchMatch && matchFilter && leagueFilter && dateFilter;
+      });
+      
+      console.log('Filtered results:', filteredSubmissions.length, 'out of', originalSubmissions.length);
+      
+      // Display filtered results
+      displayUrlSubmissions(filteredSubmissions);
+    }
+
+    // Function to clear all filters
+    function clearFilters() {
+      // Clear search box
+      document.querySelector('.search-box').value = '';
+      
+      // Reset dropdowns to "All" options
+      document.querySelector('.card-body .col-lg-2:nth-child(2) select').selectedIndex = 0;
+      document.querySelector('.card-body .col-lg-2:nth-child(3) select').selectedIndex = 0;
+      document.querySelector('.card-body .col-lg-2:nth-child(4) select').selectedIndex = 0;
+      
+      console.log('Filters cleared, showing all data');
+      
+      // Display original data
+      displayUrlSubmissions(originalSubmissions);
     }
 
     // Function to count types and status in table

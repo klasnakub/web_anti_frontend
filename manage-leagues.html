@@ -150,26 +150,37 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row g-3 align-items-end">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                   <label class="form-label fw-semibold">Search Leagues</label>
                   <div class="input-group">
                     <span class="input-group-text bg-transparent border-0">
                       <i class="bi bi-search text-muted"></i>
                     </span>
-                    <input type="text" class="form-control search-box" placeholder="Search by league name...">
+                    <input type="text" class="form-control search-box" placeholder="Search by league name, country...">
                   </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                   <label class="form-label fw-semibold">Status</label>
                   <select class="form-select">
                     <option selected>All Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
+                    <!-- Options will be loaded dynamically from table data -->
                   </select>
                 </div>
-                <div class="col-lg-3">
-                  <button class="btn btn-primary btn-modern w-100">
+                <div class="col-lg-2">
+                  <label class="form-label fw-semibold">Country</label>
+                  <select class="form-select">
+                    <option selected>All Countries</option>
+                    <!-- Options will be loaded dynamically from table data -->
+                  </select>
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn btn-primary btn-modern w-100" onclick="applyFilters()">
                     <i class="bi bi-funnel me-2"></i>Filter
+                  </button>
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn btn-outline-secondary btn-modern w-100" onclick="clearFilters()" title="Clear Filters">
+                    <i class="bi bi-x-circle me-2"></i>Clear
                   </button>
                 </div>
               </div>
@@ -224,6 +235,9 @@
   <script src="auth.js"></script>
 
   <script>
+    // Global variable to store original data
+    let originalLeagues = [];
+    
     // --- Auth check ---
     if (!validateAuth()) {
       // validateAuth() will handle the redirect
@@ -350,6 +364,10 @@
         if (response.ok) {
           const leagues = await response.json();
           console.log('Leagues loaded:', leagues);
+          
+          // Store original data for filtering
+          originalLeagues = leagues;
+          
           displayLeagues(leagues);
         } else {
           console.error('Error loading leagues:', response.status);
@@ -532,6 +550,9 @@
           </td>
         </tr>
       `).join('');
+      
+      // Update filter dropdowns with unique values from table data
+      updateFilterDropdowns(leagues);
     }
 
     // Add click event listeners to all view buttons
@@ -711,6 +732,89 @@
         }
       });
     });
+
+    // Function to update filter dropdowns with unique values from table data
+    function updateFilterDropdowns(leagues) {
+      // Get unique statuses from leagues
+      const uniqueStatuses = [...new Set(leagues.map(league => league.status).filter(status => status && status !== 'N/A'))];
+      
+      // Get unique countries from leagues
+      const uniqueCountries = [...new Set(leagues.map(league => league.country).filter(country => country && country !== 'N/A'))];
+      
+      // Update Status filter dropdown
+      const statusFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(2) select');
+      if (statusFilterDropdown) {
+        const firstOption = '<option selected>All Status</option>';
+        const optionsHTML = uniqueStatuses.sort().map(status => 
+          `<option value="${status}">${status}</option>`
+        ).join('');
+        statusFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Status filter dropdown updated with', uniqueStatuses.length, 'unique statuses');
+      }
+      
+      // Update Country filter dropdown
+      const countryFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(3) select');
+      if (countryFilterDropdown) {
+        const firstOption = '<option selected>All Countries</option>';
+        const optionsHTML = uniqueCountries.sort().map(country => 
+          `<option value="${country}">${country}</option>`
+        ).join('');
+        countryFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Country filter dropdown updated with', uniqueCountries.length, 'unique countries');
+      }
+    }
+
+    // Function to apply filters
+    function applyFilters() {
+      // Get filter values
+      const searchText = document.querySelector('.search-box').value.toLowerCase().trim();
+      const selectedStatus = document.querySelector('.card-body .col-lg-2:nth-child(2) select').value;
+      const selectedCountry = document.querySelector('.card-body .col-lg-2:nth-child(3) select').value;
+      
+      console.log('Applying filters:', {
+        searchText,
+        selectedStatus,
+        selectedCountry
+      });
+      
+      // Filter leagues based on criteria
+      const filteredLeagues = originalLeagues.filter(league => {
+        // Search text filter (partial match)
+        const searchMatch = !searchText || 
+          (league.league_name && league.league_name.toLowerCase().includes(searchText)) ||
+          (league.country && league.country.toLowerCase().includes(searchText));
+        
+        // Status filter
+        const statusFilter = selectedStatus === 'All Status' || 
+          (league.status && league.status === selectedStatus);
+        
+        // Country filter
+        const countryFilter = selectedCountry === 'All Countries' || 
+          (league.country && league.country === selectedCountry);
+        
+        return searchMatch && statusFilter && countryFilter;
+      });
+      
+      console.log('Filtered results:', filteredLeagues.length, 'out of', originalLeagues.length);
+      
+      // Display filtered results
+      displayLeagues(filteredLeagues);
+    }
+
+    // Function to clear all filters
+    function clearFilters() {
+      // Clear search box
+      document.querySelector('.search-box').value = '';
+      
+      // Reset dropdowns to "All" options
+      document.querySelector('.card-body .col-lg-2:nth-child(2) select').selectedIndex = 0;
+      document.querySelector('.card-body .col-lg-2:nth-child(3) select').selectedIndex = 0;
+      
+      console.log('Filters cleared, showing all data');
+      
+      // Display original data
+      displayLeagues(originalLeagues);
+    }
   </script>
 
   <!-- Add League Modal -->

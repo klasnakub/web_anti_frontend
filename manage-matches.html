@@ -150,39 +150,44 @@
           <div class="card mb-4">
             <div class="card-body">
               <div class="row g-3 align-items-end">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <label class="form-label fw-semibold">Search Matches</label>
                   <div class="input-group">
                     <span class="input-group-text bg-transparent border-0">
                       <i class="bi bi-search text-muted"></i>
                     </span>
-                    <input type="text" class="form-control search-box" placeholder="Search by team names...">
+                    <input type="text" class="form-control search-box" placeholder="Search by team names, league...">
                   </div>
                 </div>
                 <div class="col-lg-2">
                   <label class="form-label fw-semibold">League</label>
                   <select class="form-select">
                     <option selected>All Leagues</option>
-                    <option>Premier League</option>
-                    <option>La Liga</option>
-                    <option>Bundesliga</option>
+                    <!-- Options will be loaded dynamically from table data -->
                   </select>
                 </div>
                 <div class="col-lg-2">
                   <label class="form-label fw-semibold">Status</label>
                   <select class="form-select">
                     <option selected>All Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
+                    <!-- Options will be loaded dynamically from table data -->
                   </select>
                 </div>
                 <div class="col-lg-2">
                   <label class="form-label fw-semibold">Date</label>
-                  <input type="date" class="form-control">
+                  <select class="form-select">
+                    <option selected>All Dates</option>
+                    <!-- Options will be loaded dynamically from table data -->
+                  </select>
                 </div>
                 <div class="col-lg-2">
-                  <button class="btn btn-primary btn-modern w-100">
+                  <button class="btn btn-primary btn-modern w-100" onclick="applyFilters()">
                     <i class="bi bi-funnel me-2"></i>Filter
+                  </button>
+                </div>
+                <div class="col-lg-1">
+                  <button class="btn btn-outline-secondary btn-modern w-100" onclick="clearFilters()" title="Clear Filters">
+                    <i class="bi bi-x-circle"></i>
                   </button>
                 </div>
               </div>
@@ -295,6 +300,9 @@
   <script src="auth.js"></script>
   
   <script>
+    // Global variable to store original data
+    let originalMatches = [];
+    
     // --- Auth check ---
     if (!validateAuth()) {
       // validateAuth() will handle the redirect
@@ -440,6 +448,10 @@
         if (response.ok) {
           const matches = await response.json();
           console.log('Matches loaded:', matches);
+          
+          // Store original data for filtering
+          originalMatches = matches;
+          
           displayMatches(matches);
         } else {
           console.error('Error loading matches:', response.status);
@@ -514,6 +526,9 @@
           </tr>
         `;
       }).join('');
+      
+      // Update filter dropdowns with unique values from table data
+      updateFilterDropdowns(sortedMatches);
     }
 
     // Function to delete match
@@ -1011,6 +1026,124 @@
         console.error('Error populating view match modal:', error);
         alert('Error displaying match details. Please try again.');
       }
+    }
+
+    // Function to update filter dropdowns with unique values from table data
+    function updateFilterDropdowns(matches) {
+      // Get unique leagues from matches
+      const uniqueLeagues = [...new Set(matches.map(match => match.league_name).filter(name => name && name !== 'N/A'))];
+      
+      // Get unique statuses from matches
+      const uniqueStatuses = [...new Set(matches.map(match => match.status).filter(status => status && status !== 'N/A'))];
+      
+      // Get unique dates from matches
+      const uniqueDates = [...new Set(matches.map(match => {
+        const matchDate = new Date(match.match_date);
+        return matchDate.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+      }).filter(date => date && date !== 'N/A'))];
+      
+      // Update League filter dropdown
+      const leagueFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(2) select');
+      if (leagueFilterDropdown) {
+        const firstOption = '<option selected>All Leagues</option>';
+        const optionsHTML = uniqueLeagues.sort().map(league => 
+          `<option value="${league}">${league}</option>`
+        ).join('');
+        leagueFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('League filter dropdown updated with', uniqueLeagues.length, 'unique leagues');
+      }
+      
+      // Update Status filter dropdown
+      const statusFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(3) select');
+      if (statusFilterDropdown) {
+        const firstOption = '<option selected>All Status</option>';
+        const optionsHTML = uniqueStatuses.sort().map(status => 
+          `<option value="${status}">${status}</option>`
+        ).join('');
+        statusFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Status filter dropdown updated with', uniqueStatuses.length, 'unique statuses');
+      }
+      
+      // Update Date filter dropdown
+      const dateFilterDropdown = document.querySelector('.card-body .col-lg-2:nth-child(4) select');
+      if (dateFilterDropdown) {
+        const firstOption = '<option selected>All Dates</option>';
+        const optionsHTML = uniqueDates.sort().map(date => 
+          `<option value="${date}">${date}</option>`
+        ).join('');
+        dateFilterDropdown.innerHTML = firstOption + optionsHTML;
+        console.log('Date filter dropdown updated with', uniqueDates.length, 'unique dates');
+      }
+    }
+
+    // Function to apply filters
+    function applyFilters() {
+      // Get filter values
+      const searchText = document.querySelector('.search-box').value.toLowerCase().trim();
+      const selectedLeague = document.querySelector('.card-body .col-lg-2:nth-child(2) select').value;
+      const selectedStatus = document.querySelector('.card-body .col-lg-2:nth-child(3) select').value;
+      const selectedDate = document.querySelector('.card-body .col-lg-2:nth-child(4) select').value;
+      
+      console.log('Applying filters:', {
+        searchText,
+        selectedLeague,
+        selectedStatus,
+        selectedDate
+      });
+      
+      // Filter matches based on criteria
+      const filteredMatches = originalMatches.filter(match => {
+        // Search text filter (partial match)
+        const searchMatch = !searchText || 
+          (match.home_team && match.home_team.toLowerCase().includes(searchText)) ||
+          (match.away_team && match.away_team.toLowerCase().includes(searchText)) ||
+          (match.league_name && match.league_name.toLowerCase().includes(searchText));
+        
+        // League filter
+        const leagueFilter = selectedLeague === 'All Leagues' || 
+          (match.league_name && match.league_name === selectedLeague);
+        
+        // Status filter
+        const statusFilter = selectedStatus === 'All Status' || 
+          (match.status && match.status === selectedStatus);
+        
+        // Date filter
+        const matchDate = new Date(match.match_date);
+        const formattedMatchDate = matchDate.toLocaleDateString('en-GB', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        const dateFilter = selectedDate === 'All Dates' || 
+          formattedMatchDate === selectedDate;
+        
+        return searchMatch && leagueFilter && statusFilter && dateFilter;
+      });
+      
+      console.log('Filtered results:', filteredMatches.length, 'out of', originalMatches.length);
+      
+      // Display filtered results
+      displayMatches(filteredMatches);
+    }
+
+    // Function to clear all filters
+    function clearFilters() {
+      // Clear search box
+      document.querySelector('.search-box').value = '';
+      
+      // Reset dropdowns to "All" options
+      document.querySelector('.card-body .col-lg-2:nth-child(2) select').selectedIndex = 0;
+      document.querySelector('.card-body .col-lg-2:nth-child(3) select').selectedIndex = 0;
+      document.querySelector('.card-body .col-lg-2:nth-child(4) select').selectedIndex = 0;
+      
+      console.log('Filters cleared, showing all data');
+      
+      // Display original data
+      displayMatches(originalMatches);
     }
   </script>
 </body>
