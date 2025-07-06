@@ -298,8 +298,8 @@
                       <th class="fw-semibold">No.</th>
                       <th class="fw-semibold">URL</th>
                       <th class="fw-semibold">Type</th>
-                      <th class="fw-semibold">Match ID</th>
-                      <th class="fw-semibold">League ID</th>
+                      <th class="fw-semibold">Matches Name</th>
+                      <th class="fw-semibold">League Name</th>
                       <th class="fw-semibold">Created At</th>
                       <th class="fw-semibold">Status</th>
                       <th class="fw-semibold">Actions</th>
@@ -427,11 +427,11 @@
               <p class="form-control-plaintext" id="viewUrl">-</p>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-bold">League</label>
+              <label class="form-label fw-bold">League Name</label>
               <p class="form-control-plaintext" id="viewLeague">-</p>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-bold">Matches</label>
+              <label class="form-label fw-bold">Matches Name</label>
               <p class="form-control-plaintext" id="viewMatches">-</p>
             </div>
             <div class="col-md-6">
@@ -773,9 +773,9 @@
             </td>
             <td><span class="badge ${typeBadgeClass}" style="min-width: 100px;">${submission.type || 'N/A'}</span></td>
             <td>
-              <div class="fw-semibold">${submission.match_id || 'N/A'}</div>
+              <div class="fw-semibold">${submission.matches_name || 'N/A'}</div>
             </td>
-            <td>${submission.league_id || 'N/A'}</td>
+            <td>${submission.league_name || 'N/A'}</td>
             <td>${formattedDate}</td>
             <td><span class="badge ${statusBadgeClass} text-white" style="min-width: 100px;">${submission.status || 'N/A'}</span></td>
             <td>
@@ -883,8 +883,8 @@
       const no = cells[0].querySelector('.badge').textContent.trim();
       const url = cells[1].querySelector('a').textContent.trim();
       const type = cells[2].querySelector('.badge').textContent.trim();
-      const matches = cells[3].querySelector('.fw-semibold').textContent.trim();
-      const league = cells[4].textContent.trim();
+      const matchesName = cells[3].querySelector('.fw-semibold').textContent.trim();
+      const leagueName = cells[4].textContent.trim();
       const dateTime = cells[5].textContent.trim();
       const status = cells[6].querySelector('.badge').textContent.trim();
       
@@ -892,8 +892,8 @@
       document.getElementById('viewId').textContent = no;
       document.getElementById('viewUrl').textContent = url;
       document.getElementById('viewType').textContent = type;
-      document.getElementById('viewMatches').textContent = matches;
-      document.getElementById('viewLeague').textContent = league;
+      document.getElementById('viewMatches').textContent = matchesName;
+      document.getElementById('viewLeague').textContent = leagueName;
       document.getElementById('viewDateTime').textContent = dateTime;
       document.getElementById('viewStatus').textContent = status;
       
