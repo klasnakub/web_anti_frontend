@@ -374,18 +374,19 @@
                 </select>
               </div>
               
-              <!-- Image upload -->
+              <!-- Multiple Image upload -->
               <div class="col-12">
-                <label for="urlImage" class="form-label fw-semibold">Attach Image</label>
-                <div class="input-group">
-                  <input type="file" class="form-control" id="urlImage" name="urlImage" accept="image/*" onchange="previewImage(this)">
-                  <button class="btn btn-outline-secondary" type="button" onclick="clearImage()">
-                    <i class="bi bi-x-circle me-1"></i>Clear
+                <label class="form-label fw-semibold">Attach Images</label>
+                <div class="input-group mb-2">
+                  <input type="file" class="form-control" id="urlImage" name="urlImage" accept="image/*" onchange="addImage(this)" multiple>
+                  <button class="btn btn-outline-secondary" type="button" onclick="clearAllImages()">
+                    <i class="bi bi-x-circle me-1"></i>Clear All
                   </button>
                 </div>
-                <div id="imagePreview" class="mt-2" style="display: none;">
-                  <img id="previewImg" class="img-thumbnail" style="max-width: 200px; max-height: 150px;">
+                <div id="imagePreviewContainer" class="mt-2">
+                  <!-- Images will be added here dynamically -->
                 </div>
+                <div class="form-text">You can select multiple images. Supported formats: JPG, PNG, GIF, WEBP (max 5MB each)</div>
               </div>
             </div>
           </form>
@@ -443,9 +444,14 @@
               <p class="form-control-plaintext" id="viewStatus">-</p>
             </div>
             <div class="col-12">
-              <label class="form-label fw-bold">Image</label>
-              <div class="text-center">
-                <img id="viewImage" src="demo.webp" class="img-fluid rounded" style="max-width: 400px; max-height: 300px;" alt="Stream Image">
+              <label class="form-label fw-bold">Images</label>
+              <div id="viewImagesContainer" class="text-center">
+                <div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+                  <div class="text-muted">
+                    <i class="bi bi-image fs-1 d-block mb-2"></i>
+                    <span>Loading images...</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -453,6 +459,99 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="bi bi-x-circle me-2"></i>Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Stream Details Modal -->
+  <div class="modal fade" id="editStreamModal" tabindex="-1" aria-labelledby="editStreamModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="editStreamModalLabel">
+            <i class="bi bi-pencil me-2"></i>Edit Stream Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editStreamForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">No.</label>
+                <p class="form-control-plaintext" id="editId">-</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Type</label>
+                <select class="form-select" id="editType" name="editType" required>
+                  <option value="Website">Website</option>
+                  <option value="Social Media">Social Media</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold">URL</label>
+                <input type="url" class="form-control" id="editUrl" name="editUrl" placeholder="https://example.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">League Name</label>
+                <select class="form-select" id="editLeague" name="editLeague" required onchange="loadMatchesForEditLeague()">
+                  <option value="">Select League</option>
+                  <!-- Options will be loaded dynamically -->
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Matches Name</label>
+                <select class="form-select" id="editMatches" name="editMatches" required>
+                  <option value="">Select Match</option>
+                  <!-- Options will be loaded dynamically -->
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Date & Time</label>
+                <p class="form-control-plaintext" id="editDateTime">-</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Status</label>
+                <select class="form-select" id="editStatus" name="editStatus" required>
+                  <option value="Active">Active</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold">Current Images</label>
+                <div id="editImagesContainer" class="text-center">
+                  <div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+                    <div class="text-muted">
+                      <i class="bi bi-image fs-1 d-block mb-2"></i>
+                      <span>Loading images...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold">Add New Images</label>
+                <div class="input-group mb-2">
+                  <input type="file" class="form-control" id="editNewImages" name="editNewImages" accept="image/*" onchange="addEditImages(this)" multiple>
+                  <button class="btn btn-outline-secondary" type="button" onclick="clearAllEditImages()">
+                    <i class="bi bi-x-circle me-1"></i>Clear All
+                  </button>
+                </div>
+                <div id="editNewImagesContainer" class="mt-2">
+                  <!-- New images will be added here dynamically -->
+                </div>
+                <div class="form-text">You can select multiple images. Supported formats: JPG, PNG, GIF, WEBP (max 5MB each)</div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-2"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-primary" onclick="updateStreamDetails()">
+            <i class="bi bi-check-circle me-2"></i>Update
           </button>
         </div>
       </div>
@@ -773,10 +872,12 @@
         else if (submission.status === 'Inactive') statusBadgeClass = 'bg-danger';
         
         return `
-          <tr>
+          <tr data-submission-id="${submission.submission_id || ''}" data-match-id="${submission.match_id || ''}">
             <td><span class="badge bg-light text-dark">${index + 1}</span></td>
             <td>
-              <a href="${submission.url}" class="text-decoration-none" target="_blank">${submission.url}</a>
+              <a href="${submission.url}" class="text-decoration-none" target="_blank" title="${submission.url}">
+                ${submission.url.length > 30 ? submission.url.substring(0, 30) + '...' : submission.url}
+              </a>
             </td>
             <td><span class="badge ${typeBadgeClass}" style="min-width: 100px;">${submission.type || 'N/A'}</span></td>
             <td>
@@ -790,7 +891,7 @@
                 <button class="btn btn-outline-primary" onclick="viewStreamDetails(this)">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-outline-secondary">
+                <button class="btn btn-outline-secondary" onclick="editStreamDetails(this)">
                   <i class="bi bi-pencil"></i>
                 </button>
                 <button class="btn btn-outline-danger" onclick="deleteUrlSubmission('${submission.submission_id || ''}', '${(submission.url || '').replace(/'/g, "\\'")}')">
@@ -860,38 +961,97 @@
       }
     }
 
-    // Function to preview selected image
-    function previewImage(input) {
-      const preview = document.getElementById('imagePreview');
-      const previewImg = document.getElementById('previewImg');
-      
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
+    // Global variable to store selected images
+    let selectedImages = [];
+
+    // Function to add images to the preview
+    function addImage(input) {
+      if (input.files) {
+        const files = Array.from(input.files);
         
-        reader.onload = function(e) {
-          previewImg.src = e.target.result;
-          preview.style.display = 'block';
-        };
+        files.forEach(file => {
+          // Validate file type
+          const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+          if (!allowedTypes.includes(file.type)) {
+            alert(`File ${file.name} is not a valid image type. Please select JPG, PNG, GIF, or WEBP files.`);
+            return;
+          }
+          
+          // Validate file size (max 5MB)
+          const maxSize = 5 * 1024 * 1024; // 5MB
+          if (file.size > maxSize) {
+            alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+            return;
+          }
+          
+          // Add file to selected images
+          selectedImages.push(file);
+        });
         
-        reader.readAsDataURL(input.files[0]);
-      } else {
-        preview.style.display = 'none';
+        // Update preview
+        updateImagePreview();
+        
+        // Clear input for next selection
+        input.value = '';
       }
     }
 
-    // Function to clear selected image
-    function clearImage() {
-      const imageInput = document.getElementById('urlImage');
-      const preview = document.getElementById('imagePreview');
-      const previewImg = document.getElementById('previewImg');
+    // Function to update image preview
+    function updateImagePreview() {
+      const container = document.getElementById('imagePreviewContainer');
       
-      imageInput.value = '';
-      preview.style.display = 'none';
-      previewImg.src = '';
+      if (selectedImages.length === 0) {
+        container.innerHTML = '<div class="text-muted text-center py-3"><i class="bi bi-image fs-4 d-block mb-2"></i>No images selected</div>';
+        return;
+      }
+      
+      const imagesHTML = selectedImages.map((file, index) => {
+        const reader = new FileReader();
+        let imageSrc = '';
+        
+        reader.onload = function(e) {
+          imageSrc = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        
+        return `
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-body p-2">
+                <img src="${URL.createObjectURL(file)}" class="img-fluid rounded" style="max-height: 120px; width: 100%; object-fit: cover;">
+                <div class="small text-muted mt-1">${file.name}</div>
+                <div class="small text-muted">${(file.size / 1024).toFixed(1)} KB</div>
+                <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeImage(${index})">
+                  <i class="bi bi-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      container.innerHTML = `
+        <div class="row">
+          ${imagesHTML}
+        </div>
+      `;
+    }
+
+    // Function to remove a specific image
+    function removeImage(index) {
+      selectedImages.splice(index, 1);
+      updateImagePreview();
+    }
+
+    // Function to clear all selected images
+    function clearAllImages() {
+      selectedImages = [];
+      updateImagePreview();
+      document.getElementById('urlImage').value = '';
     }
 
     // Function to view stream details
-    function viewStreamDetails(button) {
+    async function viewStreamDetails(button) {
       const row = button.closest('tr');
       const cells = row.querySelectorAll('td');
       
@@ -904,6 +1064,9 @@
       const dateTime = cells[5].textContent.trim();
       const status = cells[6].querySelector('.badge').textContent.trim();
       
+      // Get submission ID from the row (we need to store this in the table data)
+      const submissionId = row.getAttribute('data-submission-id');
+      
       // Populate modal with data
       document.getElementById('viewId').textContent = no;
       document.getElementById('viewUrl').textContent = url;
@@ -913,14 +1076,19 @@
       document.getElementById('viewDateTime').textContent = dateTime;
       document.getElementById('viewStatus').textContent = status;
       
-      // Set image (using demo.webp for now)
-      const viewImage = document.getElementById('viewImage');
-      viewImage.src = 'demo.webp';
-      viewImage.alt = `Stream Image - ${matchesName}`;
-      
-      // Show modal
+      // Show modal first
       const modal = new bootstrap.Modal(document.getElementById('viewStreamModal'));
       modal.show();
+      
+      // Load images from API if we have submission ID
+      if (submissionId) {
+        await loadStreamImages(submissionId);
+      } else {
+        // No submission ID, show default image
+        const viewImage = document.getElementById('viewImage');
+        viewImage.src = 'demo.webp';
+        viewImage.alt = `Stream Image - ${matchesName}`;
+      }
     }
 
     async function addNewUrl() {
@@ -934,8 +1102,8 @@
       const urlMatches = formData.get('urlMatches');
       const urlStatus = formData.get('urlStatus');
       
-      // Get image file
-      const imageFile = document.getElementById('urlImage').files[0];
+      // Get selected images
+      const imageFiles = selectedImages;
       
       // Validate form
       if (!urlAddress || !urlType || !urlLeague || !urlMatches || !urlStatus) {
@@ -972,7 +1140,7 @@
           league_id: urlLeague,
           match_id: urlMatches,
           status: urlStatus,
-          image_file_name: imageFile ? imageFile.name : null
+          image_file_name: imageFiles.length > 0 ? imageFiles.map(f => f.name).join(', ') : null
         };
         
         console.log('Sending URL submission payload:', payload);
@@ -1025,8 +1193,72 @@
           const result = await response.json();
           console.log('URL submission added successfully:', result);
           
-          // Show success message
-          alert('URL submission added successfully!');
+          // Get submission_id from the response
+          const submissionId = result.submission_id;
+          
+          // If there are image files, upload them
+          if (imageFiles.length > 0 && submissionId) {
+            console.log(`Uploading ${imageFiles.length} images for submission ID:`, submissionId);
+            
+            try {
+              // Get token for image upload
+              const token = getValidAccessToken();
+              if (!token) {
+                alert('Authentication token not found for image upload. Please login again.');
+                return;
+              }
+              
+              // Upload each image
+              let uploadedCount = 0;
+              let failedCount = 0;
+              
+              for (const imageFile of imageFiles) {
+                try {
+                  // Create FormData for image upload
+                  const imageFormData = new FormData();
+                  imageFormData.append('file', imageFile);
+                  
+                  // Upload image to the submission
+                  const imageResponse = await fetch(`https://web-anti-backend-8286388439.asia-southeast1.run.app/upload/${submissionId}`, {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'accept': 'application/json'
+                    },
+                    body: imageFormData
+                  });
+                  
+                  if (imageResponse.ok) {
+                    const imageResult = await imageResponse.json();
+                    console.log(`Image ${imageFile.name} uploaded successfully:`, imageResult);
+                    uploadedCount++;
+                  } else {
+                    const imageErrorData = await imageResponse.json().catch(() => ({}));
+                    console.error(`Error uploading image ${imageFile.name}:`, imageErrorData);
+                    failedCount++;
+                  }
+                } catch (imageError) {
+                  console.error(`Network error uploading image ${imageFile.name}:`, imageError);
+                  failedCount++;
+                }
+              }
+              
+              // Show result message
+              if (uploadedCount > 0 && failedCount === 0) {
+                alert(`URL submission and ${uploadedCount} image(s) uploaded successfully!`);
+              } else if (uploadedCount > 0 && failedCount > 0) {
+                alert(`URL submission created successfully! ${uploadedCount} image(s) uploaded, ${failedCount} failed.`);
+              } else if (uploadedCount === 0 && failedCount > 0) {
+                alert('URL submission created successfully, but all image uploads failed.');
+              }
+            } catch (imageError) {
+              console.error('Network error uploading images:', imageError);
+              alert('URL submission created successfully, but image uploads failed due to network error.');
+            }
+          } else {
+            // No image files, just show success for URL submission
+            alert('URL submission added successfully!');
+          }
           
           // Close modal
           const modal = bootstrap.Modal.getInstance(document.getElementById('newUrlModal'));
@@ -1034,7 +1266,7 @@
           
           // Reset form
           form.reset();
-          clearImage(); // Clear image preview
+          clearAllImages(); // Clear all selected images
           
           // Reload URL submissions data
           loadUrlSubmissions();
@@ -1393,6 +1625,645 @@
         console.log('CSV Data:', csvContent);
       }
     }
+
+    // Function to load stream images from API
+    async function loadStreamImages(submissionId) {
+      try {
+        // Check authentication before proceeding
+        if (!validateAuth()) {
+          return;
+        }
+        
+        console.log('Loading images for submission ID:', submissionId);
+        
+        // Fetch images from API using authenticated request
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/upload/list/${submissionId}`, {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const images = await response.json();
+          console.log('Images loaded:', images);
+          displayStreamImages(images);
+        } else {
+          console.error('Error loading images:', response.status);
+          displayNoImages();
+        }
+      } catch (error) {
+        console.error('Network error loading images:', error);
+        displayNoImages();
+      }
+    }
+
+    // Function to display stream images
+    function displayStreamImages(images) {
+      const container = document.getElementById('viewImagesContainer');
+      
+      if (!images || images.length === 0) {
+        displayNoImages();
+        return;
+      }
+      
+      // Create image gallery
+      const imagesHTML = images.map((image, index) => {
+        // Convert gs:// URL to a displayable URL if needed
+        const imageUrl = image.file_url.startsWith('gs://') 
+          ? `https://storage.googleapis.com/${image.file_url.replace('gs://', '')}`
+          : image.file_url;
+        
+        return `
+          <div class="mb-3">
+            <img src="${imageUrl}" class="img-fluid rounded" style="max-width: 400px; max-height: 300px;" 
+                 alt="Stream Image ${index + 1}" onerror="this.src='demo.webp'">
+            <div class="small text-muted mt-1">
+              ${image.file_name} (${(image.file_size / 1024).toFixed(1)} KB)
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      container.innerHTML = `
+        <div class="row">
+          ${images.map((image, index) => `
+            <div class="col-md-6 mb-3">
+              <div class="text-center">
+                <img src="${image.file_url.startsWith('gs://') 
+                  ? `https://storage.googleapis.com/${image.file_url.replace('gs://', '')}` 
+                  : image.file_url}" 
+                     class="img-fluid rounded" style="max-width: 100%; max-height: 200px;" 
+                     alt="Stream Image ${index + 1}" 
+                     onerror="this.src='demo.webp'">
+                <div class="small text-muted mt-1">
+                  ${image.file_name} (${(image.file_size / 1024).toFixed(1)} KB)
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // Function to display no images message
+    function displayNoImages() {
+      const container = document.getElementById('viewImagesContainer');
+      container.innerHTML = `
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+          <div class="text-muted">
+            <i class="bi bi-image fs-1 d-block mb-2"></i>
+            <span>No images attached</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Global variable to store selected edit images
+    let selectedEditImages = [];
+    let currentEditSubmissionId = null;
+
+    // Function to edit stream details
+    async function editStreamDetails(button) {
+      const row = button.closest('tr');
+      const cells = row.querySelectorAll('td');
+      
+      // Extract data from table row
+      const no = cells[0].querySelector('.badge').textContent.trim();
+      const url = cells[1].querySelector('a').textContent.trim();
+      const type = cells[2].querySelector('.badge').textContent.trim();
+      const matchesName = cells[3].querySelector('.fw-semibold').textContent.trim();
+      const leagueName = cells[4].textContent.trim();
+      const dateTime = cells[5].textContent.trim();
+      const status = cells[6].querySelector('.badge').textContent.trim();
+      
+      // Get submission ID and match ID from the row
+      const submissionId = row.getAttribute('data-submission-id');
+      const matchId = row.getAttribute('data-match-id');
+      currentEditSubmissionId = submissionId;
+      
+      console.log('Extracted data from table:', {
+        no,
+        url,
+        type,
+        matchesName,
+        leagueName,
+        dateTime,
+        status,
+        submissionId,
+        matchId
+      });
+      
+      // Populate edit modal with basic data
+      document.getElementById('editId').textContent = no;
+      document.getElementById('editUrl').value = url;
+      document.getElementById('editType').value = type;
+      document.getElementById('editDateTime').textContent = dateTime;
+      document.getElementById('editStatus').value = status;
+      
+      // Show modal first
+      const modal = new bootstrap.Modal(document.getElementById('editStreamModal'));
+      modal.show();
+      
+      // Load match details from API if we have match ID
+      if (matchId) {
+        await loadMatchDetailsForEdit(matchId);
+      } else {
+        // Fallback: load leagues and try to set manually
+        await loadLeaguesForEdit();
+        setTimeout(async () => {
+          await setEditLeagueAndMatch(leagueName, matchesName);
+        }, 500);
+             }
+      
+      // Load current images
+      if (submissionId) {
+        await loadEditImages(submissionId);
+      }
+      
+      // Clear any previously selected new images
+      selectedEditImages = [];
+      updateEditNewImagesPreview();
+    }
+
+    // Function to load leagues for edit modal
+    async function loadLeaguesForEdit() {
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/leagues', {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const leagues = await response.json();
+          const activeLeagues = leagues.filter(league => league.status === 'Active');
+          
+          const editLeagueDropdown = document.getElementById('editLeague');
+          if (editLeagueDropdown) {
+            const firstOption = '<option value="">Select League</option>';
+            const optionsHTML = activeLeagues.map(league => 
+              `<option value="${league.league_id}">${league.league_name} (${league.country})</option>`
+            ).join('');
+            
+            editLeagueDropdown.innerHTML = firstOption + optionsHTML;
+          }
+        }
+      } catch (error) {
+        console.error('Error loading leagues for edit:', error);
+      }
+    }
+
+    // Function to set league and match in edit modal
+    async function setEditLeagueAndMatch(leagueName, matchesName) {
+      const editLeagueDropdown = document.getElementById('editLeague');
+      const editMatchesDropdown = document.getElementById('editMatches');
+      
+      // Find and select the correct league
+      if (editLeagueDropdown) {
+        for (let option of editLeagueDropdown.options) {
+          if (option.text.includes(leagueName)) {
+            editLeagueDropdown.value = option.value;
+            break;
+          }
+        }
+      }
+      
+      // Load matches for the selected league and then set the match
+      if (editLeagueDropdown.value) {
+        await loadMatchesForEditLeague();
+        
+        // Now set the correct match after matches are loaded
+        setTimeout(() => {
+          setEditMatch(matchesName);
+        }, 200);
+      }
+    }
+
+    // Function to set the correct match in edit modal
+    function setEditMatch(matchesName) {
+      const editMatchesDropdown = document.getElementById('editMatches');
+      
+      if (editMatchesDropdown) {
+        console.log('Setting match for:', matchesName);
+        console.log('Available options:', Array.from(editMatchesDropdown.options).map(opt => opt.text));
+        
+        for (let option of editMatchesDropdown.options) {
+          console.log('Checking option:', option.text, 'against:', matchesName);
+          if (option.text.includes(matchesName)) {
+            editMatchesDropdown.value = option.value;
+            console.log('Match set to:', option.value, 'for:', matchesName);
+            break;
+          }
+        }
+        
+        // If no match found, log it
+        if (!editMatchesDropdown.value) {
+          console.log('No match found for:', matchesName);
+        }
+      }
+    }
+
+    // Function to load matches for edit league
+    async function loadMatchesForEditLeague() {
+      const leagueId = document.getElementById('editLeague').value;
+      const matchesDropdown = document.getElementById('editMatches');
+      
+      matchesDropdown.innerHTML = '<option value="">Select Match</option>';
+      
+      if (!leagueId) return;
+      
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        const response = await makeAuthenticatedRequest('https://web-anti-backend-8286388439.asia-southeast1.run.app/matches', {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const matches = await response.json();
+          const leagueMatches = matches.filter(match => match.league_id === leagueId);
+          
+          const firstOption = '<option value="">Select Match</option>';
+          const optionsHTML = leagueMatches.map(match => {
+            const matchDate = new Date(match.match_date);
+            const formattedDate = matchDate.toLocaleDateString('en-GB', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+            });
+            
+            return `<option value="${match.match_id}">${match.home_team} VS ${match.away_team} (${formattedDate})</option>`;
+          }).join('');
+          
+          matchesDropdown.innerHTML = firstOption + optionsHTML;
+          console.log('Matches loaded for edit league:', leagueMatches.length, 'matches');
+          console.log('League matches data:', leagueMatches);
+        }
+      } catch (error) {
+        console.error('Error loading matches for edit:', error);
+      }
+    }
+
+    // Function to load edit images
+    async function loadEditImages(submissionId) {
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/upload/list/${submissionId}`, {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const images = await response.json();
+          displayEditImages(images);
+        } else {
+          displayEditNoImages();
+        }
+      } catch (error) {
+        console.error('Error loading edit images:', error);
+        displayEditNoImages();
+      }
+    }
+
+    // Function to display edit images
+    function displayEditImages(images) {
+      const container = document.getElementById('editImagesContainer');
+      
+      if (!images || images.length === 0) {
+        displayEditNoImages();
+        return;
+      }
+      
+      container.innerHTML = `
+        <div class="row">
+          ${images.map((image, index) => `
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body p-2">
+                  <img src="${image.file_url.startsWith('gs://') 
+                    ? `https://storage.googleapis.com/${image.file_url.replace('gs://', '')}` 
+                    : image.file_url}" 
+                       class="img-fluid rounded" style="max-height: 120px; width: 100%; object-fit: cover;"
+                       onerror="this.src='demo.webp'">
+                  <div class="small text-muted mt-1">${image.file_name}</div>
+                  <div class="small text-muted">${(image.file_size / 1024).toFixed(1)} KB</div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // Function to display no edit images message
+    function displayEditNoImages() {
+      const container = document.getElementById('editImagesContainer');
+      container.innerHTML = `
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+          <div class="text-muted">
+            <i class="bi bi-image fs-1 d-block mb-2"></i>
+            <span>No images attached</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Function to add new images for edit
+    function addEditImages(input) {
+      if (input.files) {
+        const files = Array.from(input.files);
+        
+        files.forEach(file => {
+          const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+          if (!allowedTypes.includes(file.type)) {
+            alert(`File ${file.name} is not a valid image type. Please select JPG, PNG, GIF, or WEBP files.`);
+            return;
+          }
+          
+          const maxSize = 5 * 1024 * 1024; // 5MB
+          if (file.size > maxSize) {
+            alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+            return;
+          }
+          
+          selectedEditImages.push(file);
+        });
+        
+        updateEditNewImagesPreview();
+        input.value = '';
+      }
+    }
+
+    // Function to update edit new images preview
+    function updateEditNewImagesPreview() {
+      const container = document.getElementById('editNewImagesContainer');
+      
+      if (selectedEditImages.length === 0) {
+        container.innerHTML = '<div class="text-muted text-center py-3"><i class="bi bi-image fs-4 d-block mb-2"></i>No new images selected</div>';
+        return;
+      }
+      
+      const imagesHTML = selectedEditImages.map((file, index) => `
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body p-2">
+              <img src="${URL.createObjectURL(file)}" class="img-fluid rounded" style="max-height: 120px; width: 100%; object-fit: cover;">
+              <div class="small text-muted mt-1">${file.name}</div>
+              <div class="small text-muted">${(file.size / 1024).toFixed(1)} KB</div>
+              <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeEditImage(${index})">
+                <i class="bi bi-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      container.innerHTML = `
+        <div class="row">
+          ${imagesHTML}
+        </div>
+      `;
+    }
+
+    // Function to remove edit image
+    function removeEditImage(index) {
+      selectedEditImages.splice(index, 1);
+      updateEditNewImagesPreview();
+    }
+
+    // Function to clear all edit images
+    function clearAllEditImages() {
+      selectedEditImages = [];
+      updateEditNewImagesPreview();
+      document.getElementById('editNewImages').value = '';
+    }
+
+    // Function to load match details for edit
+    async function loadMatchDetailsForEdit(matchId) {
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        console.log('Loading match details for match ID:', matchId);
+        
+        // Fetch match details from API
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/matches/${matchId}`, {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const matchDetails = await response.json();
+          console.log('Match details loaded:', matchDetails);
+          
+          // Load leagues first
+          await loadLeaguesForEdit();
+          
+          // Set the league
+          await setEditLeagueFromMatch(matchDetails.league_id);
+          
+          // Load matches for the league
+          await loadMatchesForEditLeague();
+          
+          // Set the match
+          setTimeout(() => {
+            setEditMatchById(matchId);
+          }, 200);
+          
+        } else {
+          console.error('Error loading match details:', response.status);
+          // Fallback to manual loading
+          await loadLeaguesForEdit();
+        }
+      } catch (error) {
+        console.error('Network error loading match details:', error);
+        // Fallback to manual loading
+        await loadLeaguesForEdit();
+      }
+    }
+
+    // Function to set league from match details
+    async function setEditLeagueFromMatch(leagueId) {
+      const editLeagueDropdown = document.getElementById('editLeague');
+      
+      if (editLeagueDropdown && leagueId) {
+        editLeagueDropdown.value = leagueId;
+        console.log('League set to:', leagueId);
+      }
+    }
+
+    // Function to set match by ID
+    function setEditMatchById(matchId) {
+      const editMatchesDropdown = document.getElementById('editMatches');
+      
+      if (editMatchesDropdown && matchId) {
+        editMatchesDropdown.value = matchId;
+        console.log('Match set to ID:', matchId);
+      }
+    }
+
+    // Function to update stream details
+    async function updateStreamDetails() {
+      const form = document.getElementById('editStreamForm');
+      const formData = new FormData(form);
+      
+      // Get form values
+      const urlAddress = formData.get('editUrl');
+      const urlType = formData.get('editType');
+      const urlLeague = formData.get('editLeague');
+      const urlMatches = formData.get('editMatches');
+      const urlStatus = formData.get('editStatus');
+      
+      // Validate form
+      if (!urlAddress || !urlType || !urlLeague || !urlMatches || !urlStatus) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      // Validate URL format
+      try {
+        new URL(urlAddress);
+      } catch (error) {
+        alert('Please enter a valid URL');
+        return;
+      }
+      
+      // Get Update button for loading state
+      const updateBtn = document.querySelector('#editStreamModal .btn.btn-primary');
+      const originalBtnHTML = updateBtn.innerHTML;
+      
+      // Set loading state
+      updateBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Updating...';
+      updateBtn.disabled = true;
+      
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        // Prepare payload for update
+        const payload = {
+          url: urlAddress,
+          type: urlType,
+          league_id: urlLeague,
+          match_id: urlMatches,
+          status: urlStatus
+        };
+        
+        console.log('Updating URL submission:', payload);
+        
+        // Make PUT API call to update the submission
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/url_submission/${currentEditSubmissionId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+          console.log('URL submission updated successfully');
+          
+          // Upload new images if any
+          if (selectedEditImages.length > 0) {
+            console.log(`Uploading ${selectedEditImages.length} new images`);
+            
+            const token = getValidAccessToken();
+            if (!token) {
+              alert('Authentication token not found for image upload. Please login again.');
+              return;
+            }
+            
+            let uploadedCount = 0;
+            let failedCount = 0;
+            
+            for (const imageFile of selectedEditImages) {
+              try {
+                const imageFormData = new FormData();
+                imageFormData.append('file', imageFile);
+                
+                const imageResponse = await fetch(`https://web-anti-backend-8286388439.asia-southeast1.run.app/upload/${currentEditSubmissionId}`, {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'accept': 'application/json'
+                  },
+                  body: imageFormData
+                });
+                
+                if (imageResponse.ok) {
+                  console.log(`Image ${imageFile.name} uploaded successfully`);
+                  uploadedCount++;
+                } else {
+                  console.error(`Error uploading image ${imageFile.name}`);
+                  failedCount++;
+                }
+              } catch (imageError) {
+                console.error(`Network error uploading image ${imageFile.name}:`, imageError);
+                failedCount++;
+              }
+            }
+            
+            // Show result message
+            if (uploadedCount > 0 && failedCount === 0) {
+              alert(`URL submission updated and ${uploadedCount} new image(s) uploaded successfully!`);
+            } else if (uploadedCount > 0 && failedCount > 0) {
+              alert(`URL submission updated successfully! ${uploadedCount} new image(s) uploaded, ${failedCount} failed.`);
+            } else if (uploadedCount === 0 && failedCount > 0) {
+              alert('URL submission updated successfully, but all new image uploads failed.');
+            }
+          } else {
+            alert('URL submission updated successfully!');
+          }
+          
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('editStreamModal'));
+          modal.hide();
+          
+          // Reset form
+          form.reset();
+          clearAllEditImages();
+          
+          // Reload URL submissions data
+          loadUrlSubmissions();
+          
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Error updating URL submission:', errorData);
+          alert('Error updating URL submission: ' + (errorData.detail || 'Unknown error'));
+        }
+        
+      } catch (error) {
+        console.error('Network error updating URL submission:', error);
+        alert('Network error. Please try again. Error: ' + error.message);
+      } finally {
+        // Restore button state
+        updateBtn.innerHTML = originalBtnHTML;
+        updateBtn.disabled = false;
+      }
+    }
+
+
   </script>
 </body>
 </html> 

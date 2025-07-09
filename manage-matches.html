@@ -652,6 +652,57 @@
       }
     }
 
+    // Function to load league details for edit
+    async function loadLeagueDetailsForEdit(leagueId) {
+      try {
+        if (!validateAuth()) {
+          return;
+        }
+        
+        console.log('Loading league details for league ID:', leagueId);
+        
+        // Fetch league details from API
+        const response = await makeAuthenticatedRequest(`https://web-anti-backend-8286388439.asia-southeast1.run.app/leagues/${leagueId}`, {
+          method: 'GET',
+          headers: {
+            'accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const leagueDetails = await response.json();
+          console.log('League details loaded:', leagueDetails);
+          
+          // Load all leagues first
+          await loadLeaguesForDropdowns();
+          
+          // Set the specific league
+          setTimeout(() => {
+            setEditLeagueById(leagueId);
+          }, 200);
+          
+        } else {
+          console.error('Error loading league details:', response.status);
+          // Fallback to loading all leagues
+          await loadLeaguesForDropdowns();
+        }
+      } catch (error) {
+        console.error('Network error loading league details:', error);
+        // Fallback to loading all leagues
+        await loadLeaguesForDropdowns();
+      }
+    }
+
+    // Function to set league by ID in edit modal
+    function setEditLeagueById(leagueId) {
+      const editLeagueDropdown = document.getElementById('editLeagueName');
+      
+      if (editLeagueDropdown && leagueId) {
+        editLeagueDropdown.value = leagueId;
+        console.log('League set to ID:', leagueId);
+      }
+    }
+
     async function addNewMatch() {
       const form = document.getElementById('addMatchForm');
       const formData = new FormData(form);
@@ -850,7 +901,7 @@
   </div>
 
   <script>
-    function populateEditMatchModal(homeTeam, awayTeam, leagueId, matchDate, matchStatus, matchId) {
+    async function populateEditMatchModal(homeTeam, awayTeam, leagueId, matchDate, matchStatus, matchId) {
       console.log('Edit Match Modal Data:', { homeTeam, awayTeam, leagueId, matchDate, matchStatus, matchId });
       
       try {
@@ -866,10 +917,14 @@
         // Populate form fields with current data
         document.getElementById('editHomeTeam').value = homeTeam || '';
         document.getElementById('editAwayTeam').value = awayTeam || '';
-        // โหลดลีกใหม่และ set ค่า leagueId หลังโหลดเสร็จ
-        loadLeaguesForDropdowns().then(() => {
-          document.getElementById('editLeagueName').value = leagueId || '';
-        });
+        
+        // Load league details from API if we have leagueId
+        if (leagueId) {
+          await loadLeagueDetailsForEdit(leagueId);
+        } else {
+          // Fallback: load all leagues
+          await loadLeaguesForDropdowns();
+        }
         
         // Convert date string to datetime-local format
         if (matchDate) {
